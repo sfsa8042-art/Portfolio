@@ -31,7 +31,7 @@ export function ApexMockup() {
   return (
     <svg viewBox="0 0 600 340" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
       <rect width="600" height="340" fill="#08090b" />
-      <BrowserChrome url="apex-racing.app/dashboard" />
+      <BrowserChrome url="apex-racing.online/dashboard" />
 
       {/* header */}
       <text x="20" y="58" fontFamily="Inter, sans-serif" fontWeight="600" fontSize="15" fill="#f2f2f2">
