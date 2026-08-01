@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+@page { size: A4; margin: 0; }
+
+body {
+  font-family: 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
+  color: #1a1a2e;
+  font-size: 9.5pt;
+  line-height: 1.55;
+  background: #fff;
+  -webkit-print-color-adjust: exact !important;
+  print-color-adjust: exact !important;
+}
+
+.page {
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm 24mm 18mm 24mm;
+  position: relative;
+  page-break-after: always;
+  overflow: hidden;
+}
+.page::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: #1E3A5F;
+}
+
+/* Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid #E5E7EB;
+  margin-bottom: 16px;
+}
+.logo-block { display: flex; align-items: center; gap: 10px; }
+.logo-mark { font-weight: 900; font-size: 22pt; letter-spacing: -2px; color: #1a1a2e; }
+.logo-mark span { color: #DC2626; }
+.logo-sub { font-size: 7pt; color: #9CA3AF; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600; }
+.page-num { font-size: 7.5pt; color: #9CA3AF; font-weight: 500; }
+
+/* Footer */
+.page-footer {
+  position: absolute;
+  bottom: 10mm;
+  left: 24mm;
+  right: 24mm;
+  display: flex;
+  justify-content: space-between;
+  font-size: 6.5pt;
+  color: #D1D5DB;
+  border-top: 1px solid #F3F4F6;
+  padding-top: 6px;
+}
+
+/* Title banner */
+.title-banner {
+  background: #0F172A;
+  border-radius: 10px;
+  padding: 22px 26px;
+  margin-bottom: 14px;
+}
+.title-banner h1 {
+  font-size: 18pt;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+  margin-bottom: 3px;
+}
+.title-banner .subtitle {
+  font-size: 8pt;
+  color: rgba(255,255,255,0.45);
+  font-weight: 400;
+  line-height: 1.5;
+}
+.title-meta {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+.title-meta-item {
+  font-size: 7pt;
+  color: rgba(255,255,255,0.3);
+  font-weight: 500;
+}
+.title-meta-item strong {
+  color: rgba(255,255,255,0.75);
+  font-weight: 600;
+}
+
+/* Profile + Score */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.profile-card {
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.profile-card h3 {
+  font-size: 6.5pt;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 8px;
+}
+.param-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2.5px 0;
+  font-size: 8.5pt;
+  border-bottom: 1px solid #F3F4F6;
+}
+.param-row:last-child { border-bottom: none; }
+.param-label { color: #6B7280; }
+.param-value { font-weight: 600; color: #1a1a2e; }
+
+/* Score */
+.score-section {
+  background: #F9FAFB;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.score-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: conic-gradient(#2563EB 0deg, #2563EB 208.8deg, #E5E7EB 208.8deg, #E5E7EB 360deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.score-circle-inner {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.score-num { font-size: 18pt; font-weight: 900; color: #1E3A5F; line-height: 1; }
+.score-max { font-size: 6.5pt; color: #9CA3AF; font-weight: 500; }
+.score-info h3 { font-size: 10pt; font-weight: 700; color: #1E3A5F; margin-bottom: 3px; }
+.score-info p { font-size: 7.5pt; color: #4B5563; line-height: 1.5; }
+.score-context {
+  margin-top: 5px;
+  font-size: 6.5pt;
+  color: #6B7280;
+  background: #F3F4F6;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.scale-bar {
+  display: flex;
+  margin-top: 6px;
+  gap: 3px;
+  font-size: 6pt;
+}
+.scale-item {
+  padding: 2px 7px;
+  border-radius: 3px;
+  font-weight: 700;
+  color: #fff;
+}
+.scale-red { background: #B91C1C; }
+.scale-amber { background: #92400E; }
+.scale-green { background: #166534; }
+
+/* Risk exposure */
+.risk-exposure {
+  background: #F9FAFB;
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+.risk-exposure-left {
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+.risk-exposure-label {
+  font-size: 6pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6B7280;
+  margin-bottom: 3px;
+}
+.risk-exposure-num {
+  font-size: 22pt;
+  font-weight: 900;
+  color: #991B1B;
+  line-height: 1;
+}
+.risk-exposure-note {
+  font-size: 6pt;
+  color: #9CA3AF;
+  margin-top: 2px;
+}
+.risk-exposure-desc {
+  font-size: 7.5pt;
+  color: #4B5563;
+  line-height: 1.55;
+}
+
+/* Exec summary */
+.exec-summary {
+  border-left: 3px solid #1E3A5F;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  font-size: 8.5pt;
+  color: #374151;
+  line-height: 1.6;
+}
+.section-label {
+  font-size: 6pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.8px;
+  color: #6B7280;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* 3 pillars */
+.pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.pillar {
+  border-radius: 8px;
+  padding: 12px 12px;
+}
+.pillar-fire { background: #FEF2F2; border: 1px solid #FECACA; }
+.pillar-san { background: #FFFBEB; border: 1px solid #FDE68A; }
+.pillar-ot { background: #F0FDF4; border: 1px solid #BBF7D0; }
+
+.pillar-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.pillar-tag {
+  font-size: 6pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+.pillar-fire .pillar-tag { background: #FEE2E2; color: #991B1B; }
+.pillar-san .pillar-tag { background: #FEF3C7; color: #92400E; }
+.pillar-ot .pillar-tag { background: #DCFCE7; color: #166534; }
+
+.pillar h4 { font-size: 7.5pt; font-weight: 700; color: #374151; }
+
+.pillar-score-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 4px;
+}
+.pillar .pillar-score { font-size: 18pt; font-weight: 900; line-height: 1; }
+.pillar-fire .pillar-score { color: #991B1B; }
+.pillar-san .pillar-score { color: #92400E; }
+.pillar-ot .pillar-score { color: #166534; }
+.pillar .pillar-of { font-size: 8pt; color: #9CA3AF; font-weight: 500; }
+
+.pillar-level {
+  font-size: 6pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+  padding: 2px 6px; border-radius: 3px; display: inline-block; margin-bottom: 4px;
+}
+.level-high { background: #FEE2E2; color: #991B1B; }
+.level-mid { background: #FEF3C7; color: #92400E; }
+.level-low { background: #DCFCE7; color: #166534; }
+
+.pillar-comment { font-size: 7pt; color: #6B7280; line-height: 1.35; }
+
+/* Risk Interpretation */
+.risk-interp {
+  background: #0F172A;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.risk-interp-title {
+  font-size: 6pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 10px;
+}
+.risk-interp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 12px;
+}
+.ri-label {
+  font-size: 6pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 3px;
+}
+.ri-value {
+  font-size: 13pt;
+  font-weight: 900;
+  line-height: 1.1;
+}
+.ri-value.ri-high { color: #F87171; }
+.ri-value.ri-mid { color: #FBBF24; }
+.ri-value.ri-ok { color: #6EE7B7; }
+.ri-note {
+  font-size: 6.5pt;
+  color: rgba(255,255,255,0.4);
+  margin-top: 2px;
+  line-height: 1.35;
+}
+.risk-interp-footer {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 7.5pt;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+/* Auditor conclusions — NEW */
+.auditor-conclusions {
+  border: 1.5px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 0;
+}
+.auditor-conclusions-title {
+  font-size: 6pt;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #6B7280;
+  margin-bottom: 10px;
+}
+.ac-item {
+  padding: 6px 0;
+  border-bottom: 1px solid #F3F4F6;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-num {
+  font-size: 8pt;
+  font-weight: 800;
+  color: #1E3A5F;
+  flex-shrink: 0;
+  min-width: 18px;
+}
+.ac-text {
+  font-size: 8.5pt;
+  color: #1a1a2e;
+  line-height: 1.55;
+  font-weight: 500;
+}
+
+/* ══════ PAGE 2 ══════ */
+.section-title {
+  font-size: 13pt; font-weight: 800; color: #1a1a2e;
+  margin-bottom: 3px; letter-spacing: -0.3px;
+}
+.section-subtitle { font-size: 7.5pt; color: #9CA3AF; margin-bottom: 14px; }
+
+.risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.5pt;
+  margin-bottom: 12px;
+}
+.risk-table thead th {
+  background: #0F172A; color: #fff; font-weight: 700; font-size: 6pt;
+  text-transform: uppercase; letter-spacing: 1px; padding: 7px 8px; text-align: left;
+}
+.risk-table thead th:first-child { border-radius: 6px 0 0 0; }
+.risk-table thead th:last-child { border-radius: 0 6px 0 0; }
+.risk-table tbody td {
+  padding: 6px 8px; border-bottom: 1px solid #F3F4F6; vertical-align: top; line-height: 1.4;
+}
+.risk-table tbody tr:nth-child(even) { background: #FAFAFA; }
+
+.risk-badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 6.5pt; font-weight: 700; white-space: nowrap; }
+.risk-critical { background: #FEE2E2; color: #991B1B; }
+.risk-medium { background: #FEF3C7; color: #92400E; }
+.risk-low { background: #DCFCE7; color: #166534; }
+
+.priority-badge { display: inline-block; padding: 2px 6px; border-radius: 3px; font-size: 6.5pt; font-weight: 700; }
+.prio-high { background: #991B1B; color: #fff; }
+.prio-mid { background: #92400E; color: #fff; }
+.prio-low { background: #166534; color: #fff; }
+
+.category-tag {
+  font-size: 6pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+  padding: 2px 5px; border-radius: 3px; display: inline-block; margin-bottom: 1px;
+}
+.cat-fire { background: #FEF2F2; color: #B91C1C; }
+.cat-san { background: #FFFBEB; color: #B45309; }
+.cat-ot { background: #F0FDF4; color: #15803D; }
+
+/* Cumulative */
+.cumulative-risk {
+  background: #0F172A;
+  border-radius: 8px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 12px;
+}
+.cum-left { text-align: center; flex-shrink: 0; }
+.cum-num { font-size: 20pt; font-weight: 900; color: #F87171; line-height: 1; }
+.cum-label { font-size: 6pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.35); margin-top: 2px; }
+.cum-right { font-size: 7.5pt; color: rgba(255,255,255,0.6); line-height: 1.5; }
+.cum-right strong { color: rgba(255,255,255,0.9); }
+
+/* Analytical */
+.analytical-block {
+  background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px;
+  padding: 12px 16px; margin-bottom: 12px; font-size: 8pt; color: #4B5563; line-height: 1.55;
+}
+.analytical-block h4 { font-size: 8pt; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+
+/* Top 3 */
+.top3-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.top3-card { border-radius: 8px; padding: 12px 12px; }
+.top3-card.t1 { background: #FEF2F2; border: 1.5px solid #FECACA; }
+.top3-card.t2 { background: #FFFBEB; border: 1.5px solid #FDE68A; }
+.top3-card.t3 { background: #EFF6FF; border: 1.5px solid #BFDBFE; }
+.top3-num { font-size: 18pt; font-weight: 900; line-height: 1; margin-bottom: 4px; color: #1E3A5F; }
+.top3-card h4 { font-size: 8pt; font-weight: 700; color: #1a1a2e; margin-bottom: 3px; line-height: 1.3; }
+.top3-card p { font-size: 7pt; color: #6B7280; line-height: 1.4; }
+
+/* ══════ PAGE 3 ══════ */
+.action-table {
+  width: 100%; border-collapse: collapse; font-size: 7.5pt; margin-bottom: 14px;
+}
+.action-table thead th {
+  background: #0F172A; color: #fff; font-weight: 700; font-size: 6pt;
+  text-transform: uppercase; letter-spacing: 1px; padding: 7px 8px; text-align: left;
+}
+.action-table thead th:first-child { border-radius: 6px 0 0 0; }
+.action-table thead th:last-child { border-radius: 0 6px 0 0; }
+.action-table tbody td {
+  padding: 6px 8px; border-bottom: 1px solid #F3F4F6; vertical-align: top; line-height: 1.4;
+}
+.action-table tbody tr:nth-child(even) { background: #FAFAFA; }
+
+/* Week timeline */
+.week-timeline { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+.week-card {
+  background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 8px;
+  padding: 10px 12px; position: relative;
+}
+.week-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px; border-radius: 8px 8px 0 0;
+}
+.week-card:nth-child(1)::before { background: #991B1B; }
+.week-card:nth-child(2)::before { background: #92400E; }
+.week-card:nth-child(3)::before { background: #1E3A5F; }
+.week-card:nth-child(4)::before { background: #166534; }
+.week-label { font-size: 6.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.week-card:nth-child(1) .week-label { color: #991B1B; }
+.week-card:nth-child(2) .week-label { color: #92400E; }
+.week-card:nth-child(3) .week-label { color: #1E3A5F; }
+.week-card:nth-child(4) .week-label { color: #166534; }
+.week-item {
+  font-size: 7pt; color: #4B5563; padding: 1.5px 0;
+  display: flex; align-items: flex-start; gap: 4px; line-height: 1.3;
+}
+.week-item::before { content: '—'; flex-shrink: 0; color: #9CA3AF; }
+
+/* Prognosis */
+.prognosis-block {
+  background: #0F172A;
+  border-radius: 8px;
+  padding: 16px 22px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.prognosis-circle {
+  width: 76px; height: 76px; border-radius: 50%;
+  background: conic-gradient(#6EE7B7 0deg, #6EE7B7 309.6deg, rgba(255,255,255,0.06) 309.6deg, rgba(255,255,255,0.06) 360deg);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.prognosis-inner {
+  width: 58px; height: 58px; border-radius: 50%; background: #0F172A;
+  display: flex; align-items: center; justify-content: center; flex-direction: column;
+}
+.prognosis-num { font-size: 20pt; font-weight: 900; color: #6EE7B7; line-height: 1; }
+.prognosis-info h3 { font-size: 10pt; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.prognosis-info p { font-size: 7.5pt; color: rgba(255,255,255,0.5); line-height: 1.5; }
+.delta { color: #6EE7B7; font-weight: 800; }
+
+/* Outcomes */
+.outcome-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+.outcome-item {
+  display: flex; align-items: flex-start; gap: 6px;
+  background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 6px; padding: 8px 10px;
+}
+.outcome-marker {
+  width: 6px; height: 6px; border-radius: 50%; background: #166534;
+  flex-shrink: 0; margin-top: 4px;
+}
+.outcome-text { font-size: 7.5pt; color: #374151; font-weight: 500; line-height: 1.35; }
+
+/* Final closing */
+.final-closing {
+  border-top: 2px solid #1E3A5F;
+  padding: 14px 0 0 0;
+}
+.final-closing p {
+  font-size: 8.5pt;
+  color: #374151;
+  line-height: 1.65;
+}
+.sign-block {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #F3F4F6;
+}
+.sign-item-label {
+  font-size: 6pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #9CA3AF;
+  margin-bottom: 3px;
+}
+.sign-item-value {
+  font-size: 8pt;
+  font-weight: 600;
+  color: #374151;
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ PAGE 1 ════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="logo-block">
+      <div class="logo-mark">N<span>F</span>Q</div>
+      <div class="logo-sub">Compliance Report</div>
+    </div>
+    <div class="page-num">1 / 3</div>
+  </div>
+
+  <div class="title-banner">
+    <h1>Отчёт о результатах комплексного аудита</h1>
+    <div class="subtitle">Направления: пожарная безопасность · санитарные нормы (СанПиН) · охрана труда</div>
+    <div class="title-meta">
+      <div class="title-meta-item">Объект: <strong>Кафе «Городская кухня», 50 посадочных мест</strong></div>
+      <div class="title-meta-item">Дата проведения: <strong>14 марта 2026</strong></div>
+      <div class="title-meta-item">Локация: <strong>г. Москва</strong></div>
+      <div class="title-meta-item">Формат: <strong>выездной аудит</strong></div>
+      <div class="title-meta-item">Статус: <strong>Final · Client Copy</strong></div>
+    </div>
+  </div>
+
+  <!-- Profile + Score -->
+  <div class="profile-grid">
+    <div class="profile-card">
+      <h3>Параметры объекта</h3>
+      <div class="param-row"><span class="param-label">Тип</span><span class="param-value">Кафе, 50 посадочных мест</span></div>
+      <div class="param-row"><span class="param-label">Площадь</span><span class="param-value">120 м²</span></div>
+      <div class="param-row"><span class="param-label">Численность персонала</span><span class="param-value">12 человек</span></div>
+      <div class="param-row"><span class="param-label">Отраслевой сегмент</span><span class="param-value">Общественное питание</span></div>
+      <div class="param-row"><span class="param-label">Направления проверки</span><span class="param-value">ПБ · СанПиН · ОТ</span></div>
+    </div>
+    <div class="score-section">
+      <div class="score-circle">
+        <div class="score-circle-inner">
+          <div class="score-num">58</div>
+          <div class="score-max">из 100</div>
+        </div>
+      </div>
+      <div class="score-info">
+        <h3>NFQ Risk Score</h3>
+        <p>Агрегированный индекс нормативного соответствия объекта. Рассчитывается на основе количества, критичности и устранимости выявленных нарушений по трём направлениям.</p>
+        <div class="score-context">Медианное значение по сегменту общепита (Москва, 2025): 51 из 100</div>
+        <div class="scale-bar">
+          <span class="scale-item scale-red">0–40 критический</span>
+          <span class="scale-item scale-amber">41–70 средний</span>
+          <span class="scale-item scale-green">71–100 соответствие</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Exposure -->
+  <div class="risk-exposure">
+    <div class="risk-exposure-left">
+      <div class="risk-exposure-label">Совокупная штрафная экспозиция</div>
+      <div class="risk-exposure-num">до 640 000 ₽</div>
+      <div class="risk-exposure-note">при выявлении всех нарушений</div>
+    </div>
+    <div class="risk-exposure-desc">
+      Расчётная сумма штрафных санкций при одновременных проверках трёх ведомств: МЧС — до 350 000 ₽ (ст. 20.4 КоАП РФ), Роспотребнадзор — до 210 000 ₽ (ст. 6.6 КоАП РФ), Роструд — до 80 000 ₽ (ст. 5.27.1 КоАП РФ). При повторном выявлении — кратное увеличение. Дополнительно: административное приостановление деятельности до 90 суток.
+    </div>
+  </div>
+
+  <!-- Executive Summary -->
+  <div class="exec-summary">
+    <span class="section-label">Резюме аудита</span>
+    По результатам выездной проверки установлено наличие нарушений по всем трём направлениям. Критические отклонения зафиксированы в блоке пожарной безопасности и санитарного контроля хранения продукции. Документация по охране труда — неполная. Совокупный уровень нормативного соответствия объекта оценивается как средний. Ни одно из зафиксированных нарушений не является неустранимым. Приведение объекта в соответствие осуществимо в срок до 30 календарных дней.
+  </div>
+
+  <!-- 3 Pillars -->
+  <div class="pillars">
+    <div class="pillar pillar-fire">
+      <div class="pillar-head">
+        <span class="pillar-tag">ПБ</span>
+        <h4>Пожарная безопасность</h4>
+      </div>
+      <div class="pillar-score-row">
+        <span class="pillar-score">16</span><span class="pillar-of">/ 40</span>
+      </div>
+      <span class="pillar-level level-high">Высокий риск</span>
+      <div class="pillar-comment">Просроченные средства реагирования, неактуальный план эвакуации, частичное перекрытие эвакуационного прохода</div>
+    </div>
+    <div class="pillar pillar-san">
+      <div class="pillar-head">
+        <span class="pillar-tag">СанПиН</span>
+        <h4>Санитарные нормы</h4>
+      </div>
+      <div class="pillar-score-row">
+        <span class="pillar-score">22</span><span class="pillar-of">/ 35</span>
+      </div>
+      <span class="pillar-level level-mid">Средний риск</span>
+      <div class="pillar-comment">Нарушение товарного соседства в холодильной камере, отсутствие маркировки на части контейнеров</div>
+    </div>
+    <div class="pillar pillar-ot">
+      <div class="pillar-head">
+        <span class="pillar-tag">ОТ</span>
+        <h4>Охрана труда</h4>
+      </div>
+      <div class="pillar-score-row">
+        <span class="pillar-score">20</span><span class="pillar-of">/ 25</span>
+      </div>
+      <span class="pillar-level level-low">Низкий риск</span>
+      <div class="pillar-comment">Неполный комплект журналов инструктажа, 5 из 7 инструкций ОТ не пересматривались свыше 2 лет</div>
+    </div>
+  </div>
+
+  <!-- Risk Interpretation -->
+  <div class="risk-interp">
+    <div class="risk-interp-title">Интерпретация риска</div>
+    <div class="risk-interp-grid">
+      <div class="ri-item">
+        <div class="ri-label">Вероятность проверки (12 мес.)</div>
+        <div class="ri-value ri-high">Высокая</div>
+        <div class="ri-note">Общепит — приоритетная категория для Роспотребнадзора и МЧС в 2026 г.</div>
+      </div>
+      <div class="ri-item">
+        <div class="ri-label">Вероятность предписания</div>
+        <div class="ri-value ri-high">≈ 75%</div>
+        <div class="ri-note">На основании 4 критических и 3 средних нарушений</div>
+      </div>
+      <div class="ri-item">
+        <div class="ri-label">Положение относительно отрасли</div>
+        <div class="ri-value ri-mid">Среднее</div>
+        <div class="ri-note">58/100 при медиане 51 — незначительное превышение, зона риска сохраняется</div>
+      </div>
+      <div class="ri-item">
+        <div class="ri-label">Устранимость</div>
+        <div class="ri-value ri-ok">100%</div>
+        <div class="ri-note">Все нарушения устранимы без капитальных затрат в течение 30 дней</div>
+      </div>
+    </div>
+    <div class="risk-interp-footer">
+      Объект классифицирован в зоне среднего нормативного риска. При текущем уровне соответствия прохождение плановой или внеплановой проверки без предписаний маловероятно. Рекомендуется приоритетное устранение нарушений категории P1 в течение 7 дней.
+    </div>
+  </div>
+
+  <!-- 3 Auditor Conclusions -->
+  <div class="auditor-conclusions">
+    <div class="auditor-conclusions-title">Выводы аудитора</div>
+    <div class="ac-item">
+      <div class="ac-num">I.</div>
+      <div class="ac-text">Объект допущен к эксплуатации, однако его текущее нормативное состояние не обеспечивает устойчивого прохождения контрольно-надзорных мероприятий ни по одному из трёх направлений.</div>
+    </div>
+    <div class="ac-item">
+      <div class="ac-num">II.</div>
+      <div class="ac-text">Выявленные нарушения пожарной безопасности носят системный характер и свидетельствуют об отсутствии регламентированного процесса технического обслуживания средств реагирования и контроля эвакуационных маршрутов.</div>
+    </div>
+    <div class="ac-item">
+      <div class="ac-num">III.</div>
+      <div class="ac-text">При полном выполнении рекомендованного плана корректирующих мероприятий прогнозный уровень соответствия объекта достигает безопасной зоны (≥ 71 балл), что существенно снижает вероятность предписаний и штрафных санкций.</div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NFQ · Отчёт о комплексном аудите</span>
+    <span>Конфиденциально</span>
+    <span>Ref: NFQ-2026-0314-MC</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 2 ════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="logo-block">
+      <div class="logo-mark">N<span>F</span>Q</div>
+      <div class="logo-sub">Compliance Report</div>
+    </div>
+    <div class="page-num">2 / 3</div>
+  </div>
+
+  <div class="section-title">Реестр выявленных нарушений</div>
+  <div class="section-subtitle">8 нарушений · 3 направления · Выездной аудит 14.03.2026</div>
+
+  <table class="risk-table">
+    <thead>
+      <tr>
+        <th style="width:11%">Направление</th>
+        <th style="width:27%">Описание нарушения</th>
+        <th style="width:8%">Уровень</th>
+        <th style="width:30%">Нормативные последствия</th>
+        <th style="width:8%">Приоритет</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="category-tag cat-fire">ПБ</span></td>
+        <td>Огнетушитель ОП-4 в зоне кухни: срок перезарядки истёк 4 мес. назад, акт отсутствует</td>
+        <td><span class="risk-badge risk-critical">Крит.</span></td>
+        <td>Штраф до 200 000 ₽ (ст. 20.4 КоАП РФ). При возникновении пожара — до 400 000 ₽, уголовная ответственность руководителя</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-fire">ПБ</span></td>
+        <td>План эвакуации не приведён в соответствие с планировкой после перепланировки 2025 г.</td>
+        <td><span class="risk-badge risk-critical">Крит.</span></td>
+        <td>Предписание МЧС, штраф. Дезориентация людей при ЧС — основание для привлечения к ответственности</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-fire">ПБ</span></td>
+        <td>Проход к запасному эвакуационному выходу частично перекрыт складскими коробками</td>
+        <td><span class="risk-badge risk-medium">Сред.</span></td>
+        <td>Штраф до 150 000 ₽. Основание для административного приостановления деятельности до 90 суток</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-san">СанПиН</span></td>
+        <td>Мясная и молочная продукция размещены в одном отсеке холодильной камеры (нарушение товарного соседства)</td>
+        <td><span class="risk-badge risk-critical">Крит.</span></td>
+        <td>Штраф до 130 000 ₽ (ст. 6.6 КоАП РФ). Риск пищевого отравления посетителей — репутационный и судебный ущерб</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-san">СанПиН</span></td>
+        <td>3 контейнера складского хранения без маркировки: отсутствуют наименование, дата, срок годности</td>
+        <td><span class="risk-badge risk-medium">Сред.</span></td>
+        <td>Замечание Роспотребнадзора. Риск использования просроченного сырья в производстве</td>
+        <td><span class="priority-badge prio-mid">P2</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-ot">ОТ</span></td>
+        <td>Журнал инструктажа на рабочем месте отсутствует</td>
+        <td><span class="risk-badge risk-medium">Сред.</span></td>
+        <td>Штраф до 80 000 ₽ (ст. 5.27.1 КоАП РФ). Основание для назначения повторной проверки Роструда</td>
+        <td><span class="priority-badge prio-mid">P2</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-ot">ОТ</span></td>
+        <td>5 из 7 инструкций по охране труда не пересматривались свыше 2 лет</td>
+        <td><span class="risk-badge risk-medium">Сред.</span></td>
+        <td>Предписание Роструда. Необходимость повторного согласования документации</td>
+        <td><span class="priority-badge prio-mid">P2</span></td>
+      </tr>
+      <tr>
+        <td><span class="category-tag cat-ot">ОТ</span></td>
+        <td>У 2 сотрудников отсутствует подтверждение (подпись) о прохождении вводного инструктажа</td>
+        <td><span class="risk-badge risk-low">Низк.</span></td>
+        <td>Замечание при проверке. При несчастном случае — персональная ответственность руководителя</td>
+        <td><span class="priority-badge prio-low">P3</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Cumulative -->
+  <div class="cumulative-risk">
+    <div class="cum-left">
+      <div class="cum-num">640 000 ₽</div>
+      <div class="cum-label">совокупный штрафной риск</div>
+    </div>
+    <div class="cum-right">
+      <strong>Оценка максимального штрафного воздействия</strong> при одновременных проверках МЧС, Роспотребнадзора и Роструда. Без учёта: потеря выручки при приостановлении деятельности (ориентировочно 900 000 ₽/мес.), судебные издержки, репутационный ущерб.
+    </div>
+  </div>
+
+  <!-- Analytical -->
+  <div class="analytical-block">
+    <h4>Характер нарушений</h4>
+    Нарушения пожарной безопасности носят системный характер: они обусловлены не разовым упущением, а отсутствием регламентированного процесса технического обслуживания и контроля. Отклонения по СанПиН локализованы в зоне хранения и устранимы в течение 1–2 рабочих дней. Пробелы в документации по охране труда — формального характера, не требуют финансовых вложений, но нуждаются в системном подходе к ведению кадровой и нормативной документации.
+  </div>
+
+  <!-- Priorities -->
+  <div style="font-size:7pt;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6B7280;margin-bottom:8px">Приоритетные направления устранения</div>
+  <div class="top3-grid">
+    <div class="top3-card t1">
+      <div class="top3-num">01</div>
+      <h4>Средства пожарного реагирования</h4>
+      <p>Перезарядка / замена огнетушителей, верификация работоспособности сигнализации. Устраняет основание для приостановления деятельности.</p>
+    </div>
+    <div class="top3-card t2">
+      <div class="top3-num">02</div>
+      <h4>Условия хранения продукции</h4>
+      <p>Обеспечение товарного соседства, маркировка контейнеров. Снимает основание для предписания Роспотребнадзора.</p>
+    </div>
+    <div class="top3-card t3">
+      <div class="top3-num">03</div>
+      <h4>Документация по охране труда</h4>
+      <p>Восстановление журналов, актуализация инструкций, фиксация подписей. Обеспечивает юридическую защищённость при проверке.</p>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NFQ · Отчёт о комплексном аудите</span>
+    <span>Конфиденциально</span>
+    <span>Ref: NFQ-2026-0314-MC</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════ PAGE 3 ════════════════════════════════ -->
+<div class="page">
+  <div class="page-header">
+    <div class="logo-block">
+      <div class="logo-mark">N<span>F</span>Q</div>
+      <div class="logo-sub">Compliance Report</div>
+    </div>
+    <div class="page-num">3 / 3</div>
+  </div>
+
+  <div class="section-title">Рекомендуемые корректирующие мероприятия</div>
+  <div class="section-subtitle">Матрица устранения · Дорожная карта 30 дней</div>
+
+  <table class="action-table">
+    <thead>
+      <tr>
+        <th style="width:22%">Нарушение</th>
+        <th style="width:7%">P</th>
+        <th style="width:28%">Рекомендуемое действие</th>
+        <th style="width:16%">Ответственный</th>
+        <th style="width:8%">Срок</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Просроченный огнетушитель ОП-4</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+        <td>Вызов лицензированного подрядчика → перезарядка / замена → оформление акта → запись в журнал учёта</td>
+        <td>Подрядчик по ПБ</td>
+        <td>3 дня</td>
+      </tr>
+      <tr>
+        <td>Неактуальный план эвакуации</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+        <td>Заказ нового плана по текущей планировке → согласование → размещение в установленных точках</td>
+        <td>Руководитель объекта</td>
+        <td>7 дней</td>
+      </tr>
+      <tr>
+        <td>Перекрытие эвакуационного прохода</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+        <td>Освобождение прохода → перемещение коробок в зону хранения → нанесение напольной разметки</td>
+        <td>Администратор</td>
+        <td>1 день</td>
+      </tr>
+      <tr>
+        <td>Нарушение товарного соседства</td>
+        <td><span class="priority-badge prio-high">P1</span></td>
+        <td>Реорганизация холодильной камеры: выделение раздельных зон → маркировка отсеков → инструктаж персонала кухни</td>
+        <td>Шеф-повар / зав. кухней</td>
+        <td>2 дня</td>
+      </tr>
+      <tr>
+        <td>Отсутствие маркировки контейнеров</td>
+        <td><span class="priority-badge prio-mid">P2</span></td>
+        <td>Нанесение этикеток (наименование, дата, срок) → внедрение чек-листа приёмки товара</td>
+        <td>Ответственный за склад</td>
+        <td>2 дня</td>
+      </tr>
+      <tr>
+        <td>Журналы инструктажа, инструкции ОТ</td>
+        <td><span class="priority-badge prio-mid">P2</span></td>
+        <td>Заведение журнала инструктажа на рабочем месте → пересмотр 5 инструкций → утверждение руководителем</td>
+        <td>Специалист по ОТ</td>
+        <td>14 дней</td>
+      </tr>
+      <tr>
+        <td>Отсутствие подписей вводного инструктажа</td>
+        <td><span class="priority-badge prio-low">P3</span></td>
+        <td>Проведение повторного вводного инструктажа (2 сотрудника) → фиксация подписей в журнале</td>
+        <td>Администратор</td>
+        <td>3 дня</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Week plan -->
+  <div style="font-size:7pt;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:#6B7280;margin-bottom:8px">Рекомендуемый график устранения · 30 дней</div>
+
+  <div class="week-timeline">
+    <div class="week-card">
+      <div class="week-label">Неделя 1 · P1</div>
+      <div class="week-item">Замена / перезарядка огнетушителя</div>
+      <div class="week-item">Освобождение эвакуационного прохода</div>
+      <div class="week-item">Реорганизация холодильной камеры</div>
+      <div class="week-item">Маркировка складских ёмкостей</div>
+    </div>
+    <div class="week-card">
+      <div class="week-label">Неделя 2 · P1–P2</div>
+      <div class="week-item">Заказ актуального плана эвакуации</div>
+      <div class="week-item">Заведение журнала инструктажа</div>
+      <div class="week-item">Сбор недостающих подписей</div>
+    </div>
+    <div class="week-card">
+      <div class="week-label">Неделя 3 · P2</div>
+      <div class="week-item">Пересмотр 5 инструкций ОТ</div>
+      <div class="week-item">Утверждение документации</div>
+      <div class="week-item">Ознакомление персонала</div>
+    </div>
+    <div class="week-card">
+      <div class="week-label">Неделя 4 · Верификация</div>
+      <div class="week-item">Внутренняя проверка устранений</div>
+      <div class="week-item">Фотофиксация результатов</div>
+      <div class="week-item">Комплектование папки доказательств</div>
+      <div class="week-item">Контрольный скоринг (по запросу)</div>
+    </div>
+  </div>
+
+  <!-- Prognosis -->
+  <div class="prognosis-block">
+    <div class="prognosis-circle">
+      <div class="prognosis-inner">
+        <div class="prognosis-num">86</div>
+        <div style="font-size:6.5pt;color:rgba(255,255,255,0.3)">из 100</div>
+      </div>
+    </div>
+    <div class="prognosis-info">
+      <h3><span class="delta">↑ +28</span>&nbsp; Прогнозный NFQ Risk Score: 86 / 100</h3>
+      <p>При полном выполнении корректирующих мероприятий объект переходит из зоны среднего риска (58) в зону нормативного соответствия (86). Прогнозная готовность к прохождению плановых и внеплановых проверок — без существенных замечаний.</p>
+    </div>
+  </div>
+
+  <!-- Outcomes -->
+  <div class="outcome-row">
+    <div class="outcome-item">
+      <div class="outcome-marker"></div>
+      <div class="outcome-text">Существенное снижение штрафной экспозиции по трём направлениям контроля</div>
+    </div>
+    <div class="outcome-item">
+      <div class="outcome-marker"></div>
+      <div class="outcome-text">Устранение оснований для административного приостановления деятельности</div>
+    </div>
+    <div class="outcome-item">
+      <div class="outcome-marker"></div>
+      <div class="outcome-text">Обеспечение готовности к внеплановой проверке любого ведомства</div>
+    </div>
+    <div class="outcome-item">
+      <div class="outcome-marker"></div>
+      <div class="outcome-text">Систематизация внутренней нормативной и кадровой документации</div>
+    </div>
+  </div>
+
+  <!-- Final closing -->
+  <div class="final-closing">
+    <span class="section-label">Заключение</span>
+    <p>В ходе аудита зафиксировано 8 нарушений нормативных требований, из которых 4 классифицированы как критические. Совокупная штрафная экспозиция объекта оценивается до 640 000 ₽. Все выявленные нарушения устранимы без капитальных затрат. Рекомендуемый срок приведения объекта в соответствие — 30 календарных дней. При выполнении плана корректирующих мероприятий прогнозный NFQ Risk Score составляет 86 из 100, что соответствует зоне нормативного соответствия.</p>
+    <div class="sign-block">
+      <div>
+        <div class="sign-item-label">Подготовлено</div>
+        <div class="sign-item-value">Команда аудита NFQ</div>
+      </div>
+      <div>
+        <div class="sign-item-label">Дата выпуска</div>
+        <div class="sign-item-value">18 марта 2026</div>
+      </div>
+      <div>
+        <div class="sign-item-label">Референс</div>
+        <div class="sign-item-value">NFQ-2026-0314-MC</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>NFQ · Отчёт о комплексном аудите</span>
+    <span>Конфиденциально</span>
+    <span>Ref: NFQ-2026-0314-MC</span>
+  </div>
+</div>
+
+</body>
+</html>
