@@ -109,7 +109,7 @@ export const projects: Project[] = [
           title: "Awards — recognition for NFQ",
           shots: [
             { src: "/shots/nfq_cert_diploma.jpg", caption: "Winner's Diploma — open city research-and-practice conference \"Science for Life\", track \"Step into Business\", section \"Entrepreneurship in Services\". Moscow Department of Education and Science · Moscow, 2026" },
-            { src: "/shots/nfq_cert_gramota.jpg", caption: "Certificate of Merit — winner of the city research-and-practice conference \"Step into Business\" / \"Science for Life\". School No. 2045 · Moscow, 2025–2026" },
+            { src: "/shots/nfq_cert_gramota.jpg", caption: "Winner of the city research-and-practice conference \"Step into Business\" / \"Science for Life\". School No. 2045 · Moscow, 2025–2026" },
             { src: "/shots/nfq_cert_miet.jpg", caption: "Prize-winner's Diploma — 30th All-Russian student research-and-practice conference \"Creativity of the Young\", section \"Mathematics & Economics\". MIET National Research University · Moscow · Zelenograd, 2026" },
           ],
         },
