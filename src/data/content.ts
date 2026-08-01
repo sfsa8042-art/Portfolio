@@ -106,6 +106,14 @@ export const projects: Project[] = [
       ],
       shotGroups: [
         {
+          title: "Awards — recognition for NFQ",
+          shots: [
+            { src: "/shots/nfq_cert_diploma.jpg", caption: "Winner's Diploma — city research & enterprise conference \"Science for Life\", track \"Step into Business\", section \"Entrepreneurship in Services\". Financial University under the Government of the Russian Federation · Moscow, 2026" },
+            { src: "/shots/nfq_cert_gramota.jpg", caption: "Certificate of Merit — 1st place at the city research conference \"Step into Business\" / \"Science for Life\". School No. 2045 · Moscow, 2025–2026" },
+            { src: "/shots/nfq_cert_miet.jpg", caption: "Runner-up Diploma — 30th All-Russian student research conference \"Creativity of the Young\", section \"Mathematics & Economics\". MIET National Research University · Moscow · Zelenograd, 2026" },
+          ],
+        },
+        {
           title: "Landing site",
           shots: [
             { src: "/shots/nfq_landing_hero.jpg", caption: "Hero — \"Three inspections. One visit. Full protection.\" with a live Risk Dashboard (score 74)" },
@@ -142,14 +150,6 @@ export const projects: Project[] = [
             { src: "/shots/nfq_std_methodology.jpg", caption: "Inspection methodology — what's checked, how, and the legal consequence" },
             { src: "/shots/nfq_std_checklist.jpg", caption: "Checklist — one of three 52-point checklists (fire safety shown)" },
             { src: "/shots/nfq_std_score.jpg", caption: "NFQ Score — scoring formula, risk scale and P1/P2/P3 classification" },
-          ],
-        },
-        {
-          title: "Awards — recognition for NFQ",
-          shots: [
-            { src: "/shots/nfq_cert_diploma.jpg", caption: "Winner's Diploma — city research & enterprise conference \"Science for Life\", track \"Step into Business\", section \"Entrepreneurship in Services\". Financial University under the Government of the Russian Federation · Moscow, 2026" },
-            { src: "/shots/nfq_cert_gramota.jpg", caption: "Certificate of Merit — 1st place at the city research conference \"Step into Business\" / \"Science for Life\". School No. 2045 · Moscow, 2025–2026" },
-            { src: "/shots/nfq_cert_miet.jpg", caption: "Runner-up Diploma — 30th All-Russian student research conference \"Creativity of the Young\", section \"Mathematics & Economics\". MIET National Research University · Moscow · Zelenograd, 2026" },
           ],
         },
       ],
