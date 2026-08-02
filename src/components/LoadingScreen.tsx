@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { profile } from "../data/content";
 
@@ -8,7 +8,7 @@ const prefersReduced = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ── living background: soft aurora blobs + drifting light motes ── */
+/* ── living background: soft aurora blobs + drifting motes ── */
 function Aurora() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -34,25 +34,23 @@ function Aurora() {
     window.addEventListener("resize", resize);
 
     const blobs = [
-      { x: 0.5, y: 0.42, r: 0.44, hue: "137,170,204", a: 0.17, sx: 0.00013, sy: 0.00009, p: 0 },
-      { x: 0.5, y: 0.42, r: 0.3, hue: "78,133,191", a: 0.15, sx: 0.00017, sy: 0.00011, p: 2 },
-      { x: 0.5, y: 0.5, r: 0.22, hue: "180,200,230", a: 0.07, sx: 0.00021, sy: 0.00015, p: 4 },
+      { x: 0.5, y: 0.44, r: 0.44, hue: "137,170,204", a: 0.15, sx: 0.00013, sy: 0.00009, p: 0 },
+      { x: 0.5, y: 0.44, r: 0.3, hue: "78,133,191", a: 0.13, sx: 0.00017, sy: 0.00011, p: 2 },
+      { x: 0.5, y: 0.5, r: 0.22, hue: "180,200,230", a: 0.06, sx: 0.00021, sy: 0.00015, p: 4 },
     ];
-
-    const N = 46;
+    const N = 40;
     const motes = Array.from({ length: N }, () => ({
       x: Math.random(),
       y: Math.random(),
-      r: 0.4 + Math.random() * 1.6,
-      sp: 0.004 + Math.random() * 0.014,
+      r: 0.4 + Math.random() * 1.5,
+      sp: 0.004 + Math.random() * 0.013,
       dx: (Math.random() - 0.5) * 0.02,
-      a: 0.12 + Math.random() * 0.5,
+      a: 0.1 + Math.random() * 0.45,
       tw: Math.random() * Math.PI * 2,
     }));
 
     const start = performance.now();
     let last = start;
-
     const paint = (t: number, dt: number) => {
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = "lighter";
@@ -92,9 +90,8 @@ function Aurora() {
       ctx.globalCompositeOperation = "source-over";
     };
 
-    if (reduced) {
-      paint(1200, 16);
-    } else {
+    if (reduced) paint(1200, 16);
+    else {
       const draw = (now: number) => {
         const dt = now - last;
         last = now;
@@ -103,7 +100,6 @@ function Aurora() {
       };
       raf = requestAnimationFrame(draw);
     }
-
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
@@ -114,7 +110,7 @@ function Aurora() {
     <canvas
       ref={ref}
       className="absolute inset-0 w-full h-full"
-      style={{ filter: "blur(38px)" }}
+      style={{ filter: "blur(40px)" }}
     />
   );
 }
@@ -122,88 +118,60 @@ function Aurora() {
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
-// glyph-scramble "decode": characters lock left-to-right as progress climbs
-const GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%*<>/=+";
-function Decode({
+// ── boot log ──
+type Line = { m: string; mc: string; t: string; tc: string; speed: number };
+const ACCENT = "text-[#89AACC]";
+const LINES: Line[] = [
+  { m: "$", mc: "text-muted", t: ' build --profile "Artemiy Fomkin"', tc: "text-text-primary", speed: 16 },
+  { m: "✓", mc: ACCENT, t: " identity ............. compiled", tc: "text-muted", speed: 9 },
+  { m: "✓", mc: ACCENT, t: " projects ............. NFQ · APEX · EntryLens", tc: "text-text-primary/90", speed: 9 },
+  { m: "✓", mc: ACCENT, t: " recognition .......... 3 awards · 2 conferences", tc: "text-muted", speed: 9 },
+  { m: "✓", mc: ACCENT, t: " assets ............... optimized", tc: "text-muted", speed: 9 },
+  { m: "▸", mc: ACCENT, t: " launching experience", tc: "text-text-primary", speed: 13 },
+];
+
+function Typewriter({
   text,
-  progress,
-  reduced,
-  className,
+  speed,
+  onDone,
 }: {
   text: string;
-  progress: number;
-  reduced: boolean;
-  className?: string;
+  speed: number;
+  onDone: () => void;
 }) {
-  if (reduced) return <span className={className}>{text}</span>;
-  const reveal = Math.floor(progress * (text.length + 2));
-  let out = "";
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (i < reveal || !/[A-Za-z0-9]/.test(c)) out += c;
-    else out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-  }
-  return <span className={className}>{out}</span>;
+  const [n, setN] = useState(0);
+  const doneRef = useRef(onDone);
+  doneRef.current = onDone;
+  useEffect(() => {
+    setN(0);
+    let i = 0;
+    const id = setInterval(() => {
+      i += 1;
+      setN(i);
+      if (i >= text.length) {
+        clearInterval(id);
+        doneRef.current();
+      }
+    }, speed);
+    return () => clearInterval(id);
+  }, [text, speed]);
+  return <>{text.slice(0, n)}</>;
 }
 
-// the name as a "detuning" chromatic signal that focuses in with progress
-function SignalName({
-  name,
-  progress,
-  reduced,
-}: {
-  name: string;
-  progress: number;
-  reduced: boolean;
-}) {
-  const p = progress;
-  const ease = 1 - Math.pow(1 - p, 2); // settle a touch faster than linear
-  const dx = reduced ? 0 : (1 - ease) * 9;
-  const blur = reduced ? 0 : (1 - ease) * 9;
-  // deterministic micro-jitter that decays as it locks
-  const j = reduced ? 0 : Math.sin(p * 46) * 1.4 * (1 - ease);
-  const jy = reduced ? 0 : Math.cos(p * 39) * 1.0 * (1 - ease);
-  const cls =
-    "font-display italic text-5xl md:text-7xl lg:text-8xl leading-[1.05]";
+function Cursor() {
   return (
-    <div className="relative" style={{ filter: `blur(${blur}px)` }}>
-      {/* spacer defines the box */}
-      <h1 className={`${cls} text-transparent select-none`} aria-label={name}>
-        {name}
-      </h1>
-      {/* cyan ghost */}
-      <span
-        aria-hidden
-        className={`${cls} absolute inset-0`}
-        style={{
-          color: "rgba(120,200,235,0.95)",
-          mixBlendMode: "screen",
-          transform: `translate3d(${-dx + j}px, ${jy}px, 0)`,
-        }}
-      >
-        {name}
-      </span>
-      {/* violet ghost — the two converge to a cool near-white */}
-      <span
-        aria-hidden
-        className={`${cls} absolute inset-0`}
-        style={{
-          color: "rgba(172,132,226,0.95)",
-          mixBlendMode: "screen",
-          transform: `translate3d(${dx - j}px, ${-jy}px, 0)`,
-        }}
-      >
-        {name}
-      </span>
-    </div>
+    <motion.span
+      className="inline-block w-[0.5em] h-[1.05em] translate-y-[0.14em] bg-[#89AACC] ml-1 rounded-[1px]"
+      animate={{ opacity: [1, 1, 0, 0] }}
+      transition={{ duration: 0.9, repeat: Infinity, ease: "linear", times: [0, 0.5, 0.5, 1] }}
+    />
   );
 }
 
 export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
-  const [count, setCount] = useState(0);
   const reduced = prefersReduced();
-  const p = count / 100;
-  const locked = count >= 100;
+  const [current, setCurrent] = useState(0);
+  const [booted, setBooted] = useState(false);
 
   // cursor parallax
   const mx = useMotionValue(0);
@@ -211,10 +179,10 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const spring = { stiffness: 55, damping: 18, mass: 0.6 };
   const sx = useSpring(mx, spring);
   const sy = useSpring(my, spring);
-  const aurX = useTransform(sx, (v) => v * 26);
-  const aurY = useTransform(sy, (v) => v * 26);
-  const ctX = useTransform(sx, (v) => v * -10);
-  const ctY = useTransform(sy, (v) => v * -10);
+  const aurX = useTransform(sx, (v) => v * 24);
+  const aurY = useTransform(sy, (v) => v * 24);
+  const ctX = useTransform(sx, (v) => v * -8);
+  const ctY = useTransform(sy, (v) => v * -8);
 
   useEffect(() => {
     if (reduced) return;
@@ -226,28 +194,25 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     return () => window.removeEventListener("pointermove", onMove);
   }, [reduced, mx, my]);
 
+  // reduced motion: skip straight to the resolved state
   useEffect(() => {
-    const duration = reduced ? 900 : 2600;
-    const start = performance.now();
-    let raf = 0;
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / duration, 1);
-      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      setCount(Math.round(eased * 100));
-      if (t < 1) raf = requestAnimationFrame(tick);
-      else {
-        setCount(100);
-        setTimeout(onComplete, reduced ? 250 : 560);
-      }
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [onComplete, reduced]);
+    if (reduced) setCurrent(LINES.length);
+  }, [reduced]);
 
+  // when the log finishes, resolve into the name, then hand off
+  useEffect(() => {
+    if (current >= LINES.length && !booted) {
+      const idA = setTimeout(() => setBooted(true), reduced ? 0 : 240);
+      const idB = setTimeout(onComplete, reduced ? 650 : 1000);
+      return () => {
+        clearTimeout(idA);
+        clearTimeout(idB);
+      };
+    }
+  }, [current, booted, onComplete, reduced]);
+
+  const progress = Math.round((Math.min(current, LINES.length) / LINES.length) * 100);
   const year = new Date().getFullYear();
-  const linesIn = 0.15;
-  const nameStart = reduced ? 0.05 : 0.55;
-  const cornersIn = reduced ? 0.1 : 1.35;
 
   return (
     <motion.div
@@ -256,12 +221,10 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
       exit={{ y: "-100%" }}
       transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
     >
-      {/* living aurora + motes (parallax) */}
       <motion.div className="absolute inset-0" style={{ x: aurX, y: aurY }}>
         <Aurora />
       </motion.div>
 
-      {/* film grain */}
       <motion.div
         className="pointer-events-none absolute inset-[-8%] opacity-[0.05] mix-blend-overlay"
         style={{ backgroundImage: GRAIN }}
@@ -269,194 +232,129 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
       />
 
-      {/* CRT scanline drifting down — reinforces the "signal" idea */}
-      {!reduced && (
-        <motion.div
-          className="pointer-events-none absolute inset-x-0 h-24 mix-blend-screen"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent, rgba(137,170,204,0.06), transparent)",
-          }}
-          initial={{ top: "-10%" }}
-          animate={{ top: "110%" }}
-          transition={{ duration: 3.4, repeat: Infinity, ease: "linear" }}
-        />
-      )}
-
-      {/* vignette */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.62) 100%)",
+            "radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.6) 100%)",
         }}
       />
 
-      {/* central vertical hairline */}
-      <motion.div
-        className="absolute top-0 bottom-0 left-1/2 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-white/15 to-transparent"
-        initial={{ scaleY: 0, opacity: 0 }}
-        animate={{ scaleY: 1, opacity: 1 }}
-        transition={{ duration: 1.1, ease: EASE, delay: linesIn }}
-        style={{ transformOrigin: "top" }}
-      />
-      {/* horizontal guides around the name */}
-      <motion.div
-        className="absolute left-0 right-0 top-1/2 -translate-y-[3.6rem] h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: 1 }}
-        transition={{ duration: 1.3, ease: EASE, delay: nameStart - 0.15 }}
-      />
-      <motion.div
-        className="absolute left-0 right-0 top-1/2 translate-y-[3.6rem] h-px bg-gradient-to-r from-transparent via-white/12 to-transparent"
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: 1 }}
-        transition={{ duration: 1.3, ease: EASE, delay: nameStart - 0.15 }}
-      />
+      {/* corner marks */}
+      <div className="absolute top-6 left-6 text-[10px] text-muted uppercase tracking-[0.3em] flex items-center gap-2">
+        <span className="w-1 h-1 rounded-full accent-gradient" />
+        Portfolio
+      </div>
+      <div className="absolute top-6 right-6 text-[10px] text-muted uppercase tracking-[0.3em] font-mono">
+        © {year}
+      </div>
 
-      {/* corners (decoding mono labels) */}
-      <Corner className="top-6 left-6 items-start" delay={cornersIn} line="left">
-        <span className="flex items-center gap-2">
-          <span className="w-1 h-1 rounded-full accent-gradient" />
-          <Decode text="Portfolio" progress={p} reduced={reduced} />
-        </span>
-      </Corner>
-      <Corner className="top-6 right-6 items-end text-right" delay={cornersIn + 0.08} line="right">
-        <span className="font-mono">© {year}</span>
-      </Corner>
-      <Corner className="bottom-6 left-6 items-start" delay={cornersIn + 0.16} line="left">
-        <Decode text="Founder · Strategist · Builder" progress={p} reduced={reduced} />
-      </Corner>
-      <Corner className="bottom-6 right-6 items-end text-right" delay={cornersIn + 0.24} line="right">
-        <Decode text="Building globally" progress={p} reduced={reduced} className="font-mono" />
-      </Corner>
-
-      {/* center block — outer holds parallax, inner fades out as the curtain lifts */}
-      <motion.div className="relative z-10 px-6" style={{ x: ctX, y: ctY }}>
+      {/* center */}
+      <motion.div
+        className="relative z-10 w-[min(92vw,640px)] px-2"
+        style={{ x: ctX, y: ctY }}
+      >
         <motion.div
           className="flex flex-col items-center"
           exit={{ opacity: 0, y: -24, transition: { duration: 0.4, ease: "easeIn" } }}
         >
-          <motion.p
-            className="text-[11px] text-muted uppercase tracking-[0.4em] mb-6 font-mono"
-            initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: nameStart - 0.25 }}
-          >
-            <Decode text="Incoming signal" progress={p} reduced={reduced} />
-          </motion.p>
-
-          {/* name — detuned chromatic signal that focuses into place */}
+          {/* terminal window */}
           <motion.div
-            className="relative"
-            initial={{ opacity: 0, scale: 1.06 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.1, delay: nameStart - 0.1, ease: EASE }}
+            className="w-full rounded-xl border border-white/10 bg-[#0c0d10]/85 backdrop-blur-md shadow-2xl shadow-black/40 overflow-hidden"
+            initial={{ opacity: 0, y: 14, scale: 0.98 }}
+            animate={{
+              opacity: booted ? 0 : 1,
+              y: booted ? -10 : 0,
+              scale: booted ? 0.985 : 1,
+              filter: booted ? "blur(6px)" : "blur(0px)",
+            }}
+            transition={{ duration: booted ? 0.5 : 0.7, ease: EASE }}
           >
-            <SignalName name={profile.name} progress={p} reduced={reduced} />
-            {/* lock flash at 100% */}
-            {locked && !reduced && (
-              <motion.div
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(ellipse at center, rgba(255,255,255,0.35), transparent 70%)",
-                }}
-                initial={{ opacity: 0.9 }}
-                animate={{ opacity: 0 }}
-                transition={{ duration: 0.7, ease: "easeOut" }}
-              />
-            )}
+            {/* title bar */}
+            <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/[0.06]">
+              <span className="w-3 h-3 rounded-full bg-[#ff5f57]/70" />
+              <span className="w-3 h-3 rounded-full bg-[#febc2e]/70" />
+              <span className="w-3 h-3 rounded-full bg-[#28c840]/70" />
+              <span className="ml-3 text-[11px] text-muted font-mono truncate">
+                artemiy@portfolio — build
+              </span>
+            </div>
+            {/* body */}
+            <div className="px-5 py-4 font-mono text-[12.5px] md:text-[13.5px] leading-[1.9] min-h-[188px]">
+              {LINES.map((ln, idx) => {
+                if (idx > current) return null;
+                const isDone = idx < current;
+                return (
+                  <div key={idx} className="flex whitespace-pre">
+                    <span className={`${ln.mc} mr-2 shrink-0`}>{ln.m}</span>
+                    <span className={ln.tc}>
+                      {isDone ? (
+                        ln.t
+                      ) : (
+                        <Typewriter
+                          text={ln.t}
+                          speed={ln.speed}
+                          onDone={() => setCurrent((c) => c + 1)}
+                        />
+                      )}
+                    </span>
+                    {idx === current && <Cursor />}
+                  </div>
+                );
+              })}
+            </div>
+            {/* footer */}
+            <div className="flex items-center justify-between px-5 pb-3 pt-1 font-mono text-[10px] uppercase tracking-[0.25em] text-muted">
+              <span>{progress >= 100 ? "resolved" : "booting"}</span>
+              <span className="tabular-nums text-text-primary/80">
+                {String(progress).padStart(3, "0")}
+              </span>
+            </div>
           </motion.div>
 
-          {/* soft glow beneath the name */}
+          {/* resolved identity — fades in as the terminal dissolves */}
           <motion.div
-            className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[120%] h-32 accent-gradient"
+            className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.12 }}
-            transition={{ duration: 1.4, delay: nameStart + 0.3 }}
-            style={{ filter: "blur(60px)", zIndex: -1 }}
-          />
-
-          {/* progress line + counter */}
-          <motion.div
-            className="mt-10 flex flex-col items-center w-[260px] md:w-[400px]"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: nameStart + 0.35 }}
+            animate={{ opacity: booted ? 1 : 0 }}
+            transition={{ duration: 0.7, delay: booted ? 0.15 : 0, ease: EASE }}
           >
-            <div className="relative h-px w-full bg-white/10 overflow-hidden">
-              <div
-                className="absolute inset-y-0 left-0 accent-gradient origin-left"
-                style={{
-                  width: "100%",
-                  transform: `scaleX(${count / 100})`,
-                  boxShadow: "0 0 14px rgba(137,170,204,0.6)",
-                }}
-              />
-              <div
-                className="absolute top-1/2 -translate-y-1/2 h-1.5 w-1.5 rounded-full bg-white"
-                style={{
-                  left: `calc(${count}% - 3px)`,
-                  boxShadow: "0 0 12px 2px rgba(137,170,204,0.95)",
-                  opacity: count > 0 && count < 100 ? 1 : 0,
-                  transition: "opacity 0.3s",
-                }}
-              />
-            </div>
-            <div className="mt-4 flex items-center justify-between w-full text-[11px] uppercase tracking-[0.3em] text-muted font-mono">
-              <span
-                className={locked ? "text-text-primary transition-colors" : "transition-colors"}
-              >
-                {locked ? "Signal locked" : "Tuning signal"}
-              </span>
-              <span className="tabular-nums text-text-primary">
-                {String(count).padStart(3, "0")}
-              </span>
-            </div>
+            <motion.h1
+              className="font-display italic text-5xl md:text-7xl text-text-primary text-center"
+              initial={{ filter: "blur(10px)", y: 10 }}
+              animate={{ filter: booted ? "blur(0px)" : "blur(10px)", y: booted ? 0 : 10 }}
+              transition={{ duration: 0.8, delay: booted ? 0.15 : 0, ease: EASE }}
+            >
+              {profile.name}
+            </motion.h1>
+            <motion.div
+              className="mt-5 h-px w-40 accent-gradient"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: booted ? 1 : 0 }}
+              transition={{ duration: 0.7, delay: booted ? 0.35 : 0, ease: EASE }}
+              style={{ boxShadow: "0 0 14px rgba(137,170,204,0.6)" }}
+            />
+            <motion.p
+              className="mt-5 text-[11px] text-muted uppercase tracking-[0.3em]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: booted ? 1 : 0 }}
+              transition={{ duration: 0.6, delay: booted ? 0.45 : 0 }}
+            >
+              Founder · Strategist · Builder
+            </motion.p>
           </motion.div>
         </motion.div>
       </motion.div>
 
-      {/* leading accent edge — glows at the bottom, then leads the curtain up */}
+      {/* leading accent edge — leads the curtain up */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(137,170,204,0.10)] to-transparent" />
       <motion.div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] accent-gradient"
         style={{ boxShadow: "0 0 22px 3px rgba(137,170,204,0.55)" }}
         initial={{ opacity: 0, scaleX: 0 }}
-        animate={{ opacity: 0.9, scaleX: 1 }}
-        transition={{ duration: 1.2, delay: nameStart + 0.4, ease: EASE }}
+        animate={{ opacity: booted ? 0.9 : 0.4, scaleX: 1 }}
+        transition={{ duration: 1.0, ease: EASE }}
       />
-    </motion.div>
-  );
-}
-
-function Corner({
-  children,
-  className,
-  delay,
-  line,
-}: {
-  children: ReactNode;
-  className?: string;
-  delay: number;
-  line: "left" | "right";
-}) {
-  return (
-    <motion.div
-      className={`absolute z-10 flex flex-col gap-2 text-[10px] text-muted uppercase tracking-[0.3em] ${className}`}
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay, ease: EASE }}
-    >
-      <motion.span
-        className={`h-px w-8 ${line === "right" ? "self-end" : ""} bg-white/25`}
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.6, delay: delay + 0.1, ease: EASE }}
-        style={{ transformOrigin: line === "right" ? "right" : "left" }}
-      />
-      {children}
     </motion.div>
   );
 }
