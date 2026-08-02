@@ -293,6 +293,12 @@ export const certificates: Certificate[] = [
       "State certificate of professional training in the occupation \"Bank Agent\" (code 20002). Polytechnic College No. 50 named after twice Hero of Socialist Labour N. A. Zlobin, Moscow · reg. no. 001219 · issued 17 April 2026.",
   },
   {
+    src: "/certs/cert_college_bankagent_transcript.jpg",
+    title: "Transcript — \"Bank Agent\" qualification",
+    caption:
+      "Supplement to the certificate. Modules: digital literacy & safe internet conduct; client servicing for payments and cash operations; advising individuals and businesses on banking products; and lending consultation — plus training and work placement, 48 academic hours in total, qualification exam graded \"excellent\". Qualified as Bank Agent by the certification board on 5 March 2026. Polytechnic College No. 50, Moscow.",
+  },
+  {
     src: "/certs/cert_miet_itschool.jpg",
     title: "Summer IT School — MIET",
     caption:
