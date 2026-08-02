@@ -287,6 +287,24 @@ export const socials: LinkItem[] = [
 // quality English translations of the key content (issuer, program, hours, date).
 export const certificates: Certificate[] = [
   {
+    src: "/shots/nfq_cert_diploma.jpg",
+    title: "Winner's Diploma — \"Step into Business\"",
+    caption:
+      "Open city research-and-practice conference \"Science for Life\", track \"Step into Business\", section \"Entrepreneurship in Services\" — awarded for the NFQ project. Moscow Department of Education and Science · Moscow, 2026.",
+  },
+  {
+    src: "/shots/nfq_cert_gramota.jpg",
+    title: "Winner's Certificate — \"Step into Business\"",
+    caption:
+      "City research-and-practice conference \"Step into Business\" / \"Science for Life\", 1st place — awarded for the NFQ project. School No. 2045 · Moscow, 2025–2026.",
+  },
+  {
+    src: "/shots/nfq_cert_miet.jpg",
+    title: "Prize-winner's Diploma — \"Creativity of the Young\"",
+    caption:
+      "30th All-Russian student research-and-practice conference \"Creativity of the Young\", section \"Mathematics & Economics\" — awarded for the NFQ project. MIET National Research University · Moscow · Zelenograd, 2026.",
+  },
+  {
     src: "/certs/cert_college_bankagent.jpg",
     title: "Vocational Qualification — \"Bank Agent\"",
     caption:

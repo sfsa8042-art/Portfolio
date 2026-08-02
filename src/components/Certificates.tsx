@@ -80,12 +80,12 @@ export function Certificates() {
             </span>
           </div>
           <h2 className="text-4xl md:text-6xl font-display text-text-primary mb-4">
-            <Emphasis text="Courses & *certificates*" />
+            <Emphasis text="Certificates & *awards*" />
           </h2>
           <p className="text-sm md:text-base text-muted max-w-lg">
-            Programs and qualifications completed at Russian universities and
-            colleges. The original documents are in Russian — captions are
-            translated to English.
+            Awards, programs and qualifications earned at Russian schools,
+            colleges and universities. The original documents are in Russian —
+            captions are translated to English.
           </p>
         </motion.div>
 
