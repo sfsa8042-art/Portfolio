@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { profile } from "../data/content";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
-/* ── living aurora background on canvas (very subtle, dark) ── */
+const prefersReduced = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ── living background: soft aurora blobs + drifting light motes ── */
 function Aurora() {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -13,10 +17,7 @@ function Aurora() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
+    const reduced = prefersReduced();
     let raf = 0;
     let w = 0;
     let h = 0;
@@ -26,23 +27,38 @@ function Aurora() {
     const resize = () => {
       w = canvas.clientWidth;
       h = canvas.clientHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      canvas.width = Math.max(1, Math.floor(w * dpr));
+      canvas.height = Math.max(1, Math.floor(h * dpr));
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
     resize();
     window.addEventListener("resize", resize);
 
-    // soft moving light blobs, accent-tinted
     const blobs = [
-      { x: 0.5, y: 0.42, r: 0.42, hue: "137,170,204", a: 0.16, sx: 0.00013, sy: 0.00009, p: 0 },
-      { x: 0.5, y: 0.42, r: 0.30, hue: "78,133,191", a: 0.14, sx: 0.00017, sy: 0.00011, p: 2 },
-      { x: 0.5, y: 0.5, r: 0.22, hue: "180,200,230", a: 0.06, sx: 0.00021, sy: 0.00015, p: 4 },
+      { x: 0.5, y: 0.42, r: 0.44, hue: "137,170,204", a: 0.17, sx: 0.00013, sy: 0.00009, p: 0 },
+      { x: 0.5, y: 0.42, r: 0.30, hue: "78,133,191", a: 0.15, sx: 0.00017, sy: 0.00011, p: 2 },
+      { x: 0.5, y: 0.5, r: 0.22, hue: "180,200,230", a: 0.07, sx: 0.00021, sy: 0.00015, p: 4 },
     ];
 
+    // drifting motes
+    const N = 46;
+    const motes = Array.from({ length: N }, () => ({
+      x: Math.random(),
+      y: Math.random(),
+      r: 0.4 + Math.random() * 1.6,
+      sp: 0.004 + Math.random() * 0.014, // upward speed (fraction / s)
+      dx: (Math.random() - 0.5) * 0.02,
+      a: 0.12 + Math.random() * 0.5,
+      tw: Math.random() * Math.PI * 2, // twinkle phase
+    }));
+
     const start = performance.now();
-    const paint = (t: number) => {
+    let last = start;
+
+    const paint = (t: number, dt: number) => {
       ctx.clearRect(0, 0, w, h);
+
+      // aurora
       ctx.globalCompositeOperation = "lighter";
       for (const b of blobs) {
         const cx = (b.x + Math.sin(t * b.sx + b.p) * 0.08) * w;
@@ -56,14 +72,39 @@ function Aurora() {
         ctx.arc(cx, cy, rad, 0, Math.PI * 2);
         ctx.fill();
       }
+
+      // motes
+      for (const m of motes) {
+        if (!reduced) {
+          m.y -= m.sp * (dt / 1000);
+          m.x += m.dx * (dt / 1000);
+          if (m.y < -0.02) {
+            m.y = 1.02;
+            m.x = Math.random();
+          }
+        }
+        const tw = reduced ? 0.7 : 0.55 + 0.45 * Math.sin(t * 0.002 + m.tw);
+        const px = m.x * w;
+        const py = m.y * h;
+        const rr = m.r * 2.4;
+        const g = ctx.createRadialGradient(px, py, 0, px, py, rr);
+        g.addColorStop(0, `rgba(200,220,245,${m.a * tw})`);
+        g.addColorStop(1, "rgba(200,220,245,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(px, py, rr, 0, Math.PI * 2);
+        ctx.fill();
+      }
       ctx.globalCompositeOperation = "source-over";
     };
 
     if (reduced) {
-      paint(1200);
+      paint(1200, 16);
     } else {
       const draw = (now: number) => {
-        paint(now - start);
+        const dt = now - last;
+        last = now;
+        paint(now - start, dt);
         raf = requestAnimationFrame(draw);
       };
       raf = requestAnimationFrame(draw);
@@ -79,39 +120,64 @@ function Aurora() {
     <canvas
       ref={ref}
       className="absolute inset-0 w-full h-full"
-      style={{ filter: "blur(40px)" }}
+      style={{ filter: "blur(38px)" }}
     />
   );
 }
 
+// subtle film grain (static tile, gently drifting)
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
+
 export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const [count, setCount] = useState(0);
+  const reduced = prefersReduced();
+
+  // ── cursor parallax ──
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const spring = { stiffness: 55, damping: 18, mass: 0.6 };
+  const sx = useSpring(mx, spring);
+  const sy = useSpring(my, spring);
+  const aurX = useTransform(sx, (v) => v * 26);
+  const aurY = useTransform(sy, (v) => v * 26);
+  const ctX = useTransform(sx, (v) => v * -10);
+  const ctY = useTransform(sy, (v) => v * -10);
 
   useEffect(() => {
-    const duration = 3200;
+    if (reduced) return;
+    const onMove = (e: PointerEvent) => {
+      mx.set(e.clientX / window.innerWidth - 0.5);
+      my.set(e.clientY / window.innerHeight - 0.5);
+    };
+    window.addEventListener("pointermove", onMove);
+    return () => window.removeEventListener("pointermove", onMove);
+  }, [reduced, mx, my]);
+
+  useEffect(() => {
+    const duration = reduced ? 900 : 2600;
     const start = performance.now();
     let raf = 0;
     const tick = (now: number) => {
       const t = Math.min((now - start) / duration, 1);
-      const eased =
-        t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       setCount(Math.round(eased * 100));
       if (t < 1) raf = requestAnimationFrame(tick);
       else {
         setCount(100);
-        setTimeout(onComplete, 650);
+        setTimeout(onComplete, reduced ? 250 : 520);
       }
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [onComplete]);
+  }, [onComplete, reduced]);
 
   const chars = profile.name.split("");
   const year = new Date().getFullYear();
 
   const linesIn = 0.15;
-  const nameStart = 0.9;
-  const cornersIn = 1.5;
+  const nameStart = reduced ? 0.05 : 0.85;
+  const cornersIn = reduced ? 0.1 : 1.45;
 
   return (
     <motion.div
@@ -120,28 +186,41 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
       exit={{ y: "-100%" }}
       transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
     >
-      {/* living aurora */}
-      <Aurora />
+      {/* living aurora + motes (parallax) */}
+      <motion.div className="absolute inset-0" style={{ x: aurX, y: aurY }}>
+        <Aurora />
+      </motion.div>
+
+      {/* film grain */}
+      <motion.div
+        className="pointer-events-none absolute inset-[-8%] opacity-[0.05] mix-blend-overlay"
+        style={{ backgroundImage: GRAIN }}
+        animate={reduced ? undefined : { x: [0, -10, 6, -4, 0], y: [0, 6, -8, 4, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
+      />
 
       {/* vignette */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.6) 100%)",
+            "radial-gradient(circle at center, transparent 38%, rgba(0,0,0,0.62) 100%)",
         }}
       />
+
       {/* scanning sheen sweeping down once */}
-      <motion.div
-        className="pointer-events-none absolute inset-x-0 h-[40vh]"
-        style={{
-          background:
-            "linear-gradient(to bottom, transparent, rgba(137,170,204,0.06), transparent)",
-        }}
-        initial={{ top: "-40vh", opacity: 0 }}
-        animate={{ top: "140vh", opacity: [0, 1, 1, 0] }}
-        transition={{ duration: 2.6, delay: 0.6, ease: "easeInOut" }}
-      />
+      {!reduced && (
+        <motion.div
+          className="pointer-events-none absolute inset-x-0 h-[40vh]"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent, rgba(137,170,204,0.07), transparent)",
+          }}
+          initial={{ top: "-40vh", opacity: 0 }}
+          animate={{ top: "140vh", opacity: [0, 1, 1, 0] }}
+          transition={{ duration: 2.4, delay: 0.5, ease: "easeInOut" }}
+        />
+      )}
 
       {/* central vertical hairline */}
       <motion.div
@@ -182,8 +261,12 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         <span className="font-mono">Building globally</span>
       </Corner>
 
-      {/* center block */}
-      <div className="relative z-10 flex flex-col items-center px-6">
+      {/* center block — outer holds parallax, inner fades out as the curtain lifts */}
+      <motion.div className="relative z-10 px-6" style={{ x: ctX, y: ctY }}>
+      <motion.div
+        className="flex flex-col items-center"
+        exit={{ opacity: 0, y: -24, transition: { duration: 0.4, ease: "easeIn" } }}
+      >
         <motion.p
           className="text-[11px] text-muted uppercase tracking-[0.4em] mb-6"
           initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
@@ -193,32 +276,49 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           Collection '26
         </motion.p>
 
-        {/* name — letters rise from under a mask, clean blur-in (no color flash) */}
-        <h1 className="flex text-5xl md:text-7xl lg:text-8xl font-display italic text-text-primary leading-[1.05] pb-1">
-          {chars.map((ch, i) => (
-            <span key={i} className="relative overflow-hidden inline-block">
-              <motion.span
-                className="inline-block"
-                initial={{ y: "120%", filter: "blur(8px)", opacity: 0 }}
-                animate={{ y: "0%", filter: "blur(0px)", opacity: 1 }}
-                transition={{
-                  duration: 1.0,
-                  delay: nameStart + i * 0.055,
-                  ease: EASE,
-                }}
-                style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
-              >
-                {ch === " " ? "\u00A0" : ch}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
+        {/* name — letters rise from under a mask + a one-time light sweep */}
+        <div className="relative">
+          <h1 className="flex text-5xl md:text-7xl lg:text-8xl font-display italic text-text-primary leading-[1.05] pb-1">
+            {chars.map((ch, i) => (
+              <span key={i} className="relative overflow-hidden inline-block">
+                <motion.span
+                  className="inline-block"
+                  initial={{ y: "120%", filter: "blur(8px)", opacity: 0 }}
+                  animate={{ y: "0%", filter: "blur(0px)", opacity: 1 }}
+                  transition={{
+                    duration: 1.0,
+                    delay: nameStart + i * 0.055,
+                    ease: EASE,
+                  }}
+                  style={{ whiteSpace: ch === " " ? "pre" : "normal" }}
+                >
+                  {ch === " " ? " " : ch}
+                </motion.span>
+              </span>
+            ))}
+          </h1>
+
+          {/* light sweep across the name */}
+          {!reduced && (
+            <motion.div
+              className="pointer-events-none absolute inset-0 mix-blend-overlay"
+              style={{
+                background:
+                  "linear-gradient(105deg, transparent 38%, rgba(255,255,255,0.85) 50%, transparent 62%)",
+                backgroundSize: "220% 100%",
+              }}
+              initial={{ backgroundPositionX: "140%", opacity: 0 }}
+              animate={{ backgroundPositionX: "-40%", opacity: [0, 1, 1, 0] }}
+              transition={{ duration: 1.1, delay: nameStart + chars.length * 0.055 + 0.15, ease: "easeInOut" }}
+            />
+          )}
+        </div>
 
         {/* soft glow feathering beneath the name */}
         <motion.div
           className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-[120%] h-32 accent-gradient"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 0.1 }}
+          animate={{ opacity: 0.12 }}
           transition={{ duration: 1.4, delay: nameStart + 0.3 }}
           style={{ filter: "blur(60px)", zIndex: -1 }}
         />
@@ -228,7 +328,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
           className="mt-10 flex flex-col items-center w-[260px] md:w-[400px]"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: nameStart + 0.5 }}
+          transition={{ duration: 0.6, delay: nameStart + 0.45 }}
         >
           <div className="relative h-px w-full bg-white/10 overflow-hidden">
             <div
@@ -256,7 +356,18 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
             </span>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
+      </motion.div>
+
+      {/* leading accent edge — glows at the bottom, then leads the curtain up */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(137,170,204,0.10)] to-transparent" />
+      <motion.div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] accent-gradient"
+        style={{ boxShadow: "0 0 22px 3px rgba(137,170,204,0.55)" }}
+        initial={{ opacity: 0, scaleX: 0 }}
+        animate={{ opacity: 0.9, scaleX: 1 }}
+        transition={{ duration: 1.2, delay: nameStart + 0.4, ease: EASE }}
+      />
     </motion.div>
   );
 }
