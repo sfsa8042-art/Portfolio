@@ -1,6 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { certificates, moreCertificates, type Certificate } from "../data/content";
+import {
+  certificates,
+  moreCertificates,
+  divingCards,
+  type Certificate,
+  type DivingCard,
+} from "../data/content";
 import { Emphasis } from "./Emphasis";
 
 const EASE = [0.25, 0.1, 0.25, 1] as const;
@@ -47,6 +53,77 @@ function CertCard({
   );
 }
 
+function FlipCard({ card, index }: { card: DivingCard; index: number }) {
+  const [flipped, setFlipped] = useState(false);
+  const faceStyle: CSSProperties = {
+    backfaceVisibility: "hidden",
+  };
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay: index * 0.06, ease: EASE }}
+      className="flex flex-col"
+    >
+      <button
+        onClick={() => setFlipped((v) => !v)}
+        aria-label={`Flip ${card.title}`}
+        aria-pressed={flipped}
+        className="relative block w-full"
+        style={{ perspective: "1200px", aspectRatio: "1.585 / 1" }}
+      >
+        <div
+          className="relative h-full w-full transition-transform duration-500"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          }}
+        >
+          <span
+            className="absolute inset-0 rounded-2xl overflow-hidden border border-stroke bg-white"
+            style={faceStyle}
+          >
+            <img
+              src={card.front}
+              alt={`${card.title} — front`}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </span>
+          <span
+            className="absolute inset-0 rounded-2xl overflow-hidden border border-stroke bg-white"
+            style={{ ...faceStyle, transform: "rotateY(180deg)" }}
+          >
+            <img
+              src={card.back}
+              alt={`${card.title} — back`}
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </span>
+        </div>
+        <span className="pointer-events-none absolute bottom-3 right-3 z-10 flex items-center gap-1.5 text-[11px] text-text-primary bg-bg/70 backdrop-blur-md border border-white/10 rounded-full px-2.5 py-1">
+          <span
+            className={`inline-block transition-transform duration-500 ${
+              flipped ? "rotate-180" : ""
+            }`}
+          >
+            ⟳
+          </span>
+          {flipped ? "Back" : "Flip"}
+        </span>
+      </button>
+      <figcaption className="pt-4">
+        <h3 className="text-base md:text-lg text-text-primary mb-1">
+          {card.title}
+        </h3>
+        <p className="text-sm text-muted leading-relaxed">{card.caption}</p>
+      </figcaption>
+    </motion.figure>
+  );
+}
+
 export function Certificates() {
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [expanded, setExpanded] = useState(false);
@@ -61,7 +138,9 @@ export function Certificates() {
     return () => window.removeEventListener("keydown", onKey);
   }, [lightbox]);
 
-  if (certificates.length === 0 && moreCertificates.length === 0) return null;
+  const moreCount = moreCertificates.length + divingCards.length;
+
+  if (certificates.length === 0 && moreCount === 0) return null;
 
   return (
     <section id="certificates" className="bg-bg py-16 md:py-24">
@@ -97,7 +176,7 @@ export function Certificates() {
         </div>
 
         {/* less-important — collapsed behind a toggle */}
-        {moreCertificates.length > 0 && (
+        {moreCount > 0 && (
           <div className="mt-6">
             <button
               onClick={() => setExpanded((v) => !v)}
@@ -109,7 +188,7 @@ export function Certificates() {
                   More certificates &amp; diplomas
                 </span>
                 <span className="text-xs text-muted font-mono tabular-nums border border-stroke rounded-full px-2 py-0.5">
-                  {moreCertificates.length}
+                  {moreCount}
                 </span>
               </span>
               <span className="flex items-center gap-2 text-xs text-muted uppercase tracking-[0.2em]">
@@ -134,16 +213,54 @@ export function Certificates() {
                   transition={{ duration: 0.45, ease: EASE }}
                   className="overflow-hidden"
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
-                    {moreCertificates.map((c, i) => (
-                      <CertCard
-                        key={c.src}
-                        cert={c}
-                        index={i}
-                        onZoom={setLightbox}
-                      />
-                    ))}
-                  </div>
+                  {/* diving — flip cards */}
+                  {divingCards.length > 0 && (
+                    <div className="pt-8">
+                      <div className="flex items-center gap-3 mb-2">
+                        <span className="w-6 h-px bg-stroke" />
+                        <h3 className="text-sm text-text-primary/80">
+                          Scuba diving
+                        </h3>
+                        <span className="text-xs text-muted font-mono">
+                          {divingCards.length}
+                        </span>
+                      </div>
+                      <p className="text-xs text-muted mb-5">
+                        Two-sided certification cards — click a card to flip it
+                        over.
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {divingCards.map((c, i) => (
+                          <FlipCard key={c.front} card={c} index={i} />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* other certificates & diplomas */}
+                  {moreCertificates.length > 0 && (
+                    <div className="pt-8">
+                      <div className="flex items-center gap-3 mb-5">
+                        <span className="w-6 h-px bg-stroke" />
+                        <h3 className="text-sm text-text-primary/80">
+                          Certificates &amp; diplomas
+                        </h3>
+                        <span className="text-xs text-muted font-mono">
+                          {moreCertificates.length}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {moreCertificates.map((c, i) => (
+                          <CertCard
+                            key={c.src}
+                            cert={c}
+                            index={i}
+                            onZoom={setLightbox}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </AnimatePresence>

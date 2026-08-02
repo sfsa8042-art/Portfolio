@@ -38,6 +38,13 @@ export type FeatureItem = { title: string; body: string };
 export type LinkItem = { label: string; href: string; kind?: "primary" | "ghost" };
 export type Metric = { value: string; label: string };
 export type Certificate = { src: string; title: string; caption: string };
+// A two-sided card (e.g. a scuba certification) that flips to reveal its back.
+export type DivingCard = {
+  title: string;
+  front: string;
+  back: string;
+  caption: string;
+};
 
 export type Project = {
   slug: string;
@@ -332,5 +339,79 @@ export const moreCertificates: Certificate[] = [
     title: "Summer Language & Sports Program — VAVT",
     caption:
       "Supplementary program for school students, 90 academic hours. Russian Foreign Trade Academy (VAVT) under the Ministry of Economic Development of the Russian Federation · 3–14 June 2024.",
+  },
+  {
+    src: "/certs/cert_olympiad_literature.jpg",
+    title: "Olympiad Winner — Literature",
+    caption:
+      "Winner of the school stage of the All-Russian School Olympiad in Literature, 2022–2023. School No. 883 · Moscow, 2023.",
+  },
+  {
+    src: "/certs/cert_olympiad_obzh.jpg",
+    title: "Olympiad Prize-winner — Life Safety",
+    caption:
+      "Prize-winner of the school stage of the All-Russian School Olympiad in Life Safety (OBZh), 2022–2023. School No. 883 · Moscow, 2023.",
+  },
+  {
+    src: "/certs/cert_school_conf_winner.jpg",
+    title: "Winner — school science conference",
+    caption:
+      "Winner of the school research-and-practice conference. School No. 2045 · Zelenograd, 2026.",
+  },
+  {
+    src: "/certs/cert_photo_first.jpg",
+    title: "1st place — photo contest",
+    caption:
+      "Diploma for winning the \"Through the Eyes of the First\" photo contest. \"Movement of the First\" national children's & youth movement · 2025.",
+  },
+  {
+    src: "/certs/cert_creativity_young_school.jpg",
+    title: "Award — \"Creativity of the Young\"",
+    caption:
+      "Awarded for research work (\"Creativity of the Young\") in the social sciences and entrepreneurship. School No. 2045 · Moscow, 2026.",
+  },
+  {
+    src: "/certs/cert_academic.jpg",
+    title: "Award — academic achievement",
+    caption:
+      "Awarded for strong academic results. School No. 2045 · Moscow, 2025–2026.",
+  },
+  {
+    src: "/certs/cert_scienceforlife_participant.jpg",
+    title: "Finalist — \"Science for Life\"",
+    caption:
+      "Certificate of participation in the final stage of the city research-and-practice conference \"Science for Life\", track \"Step into Business\", section \"Entrepreneurship in Services\". Moscow, 2026.",
+  },
+  {
+    src: "/certs/cert_gratitude_family.jpg",
+    title: "Letter of Gratitude",
+    caption:
+      "Issued to the student's family for his strong results at the \"Science for Life\" research-and-practice conference. School No. 2045 · Moscow, 2025–2026.",
+  },
+];
+
+// Two-sided scuba certification cards — rendered as flip cards in the
+// Certificates section. Click a card to flip to the reverse side.
+export const divingCards: DivingCard[] = [
+  {
+    title: "Rescue Diver — NDL",
+    front: "/certs/diving/rescue_front.jpg",
+    back: "/certs/diving/rescue_back.jpg",
+    caption:
+      "National Dive League — Rescue Diver. Da-Diving center · certified 11 Sep 2024.",
+  },
+  {
+    title: "Open Water Diver — SSI",
+    front: "/certs/diving/ow_front.jpg",
+    back: "/certs/diving/ow_back.jpg",
+    caption:
+      "SSI Junior Open Water Diver (Autonomous Diver · ISO 24801-2). Da-Dive center · certified 29 Jul 2021.",
+  },
+  {
+    title: "Junior Universal Diver — NDL",
+    front: "/certs/diving/jununi_front.jpg",
+    back: "/certs/diving/jununi_back.jpg",
+    caption:
+      "National Dive League — Junior Universal Diver, max depth 21 m (dives under supervision of a certified adult). Da-Diving center · certified 7 Aug 2022.",
   },
 ];
