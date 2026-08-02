@@ -341,6 +341,12 @@ export const moreCertificates: Certificate[] = [
       "Supplementary program for school students, 90 academic hours. Russian Foreign Trade Academy (VAVT) under the Ministry of Economic Development of the Russian Federation · 3–14 June 2024.",
   },
   {
+    src: "/certs/cert_premiere_videosmile.jpg",
+    title: "Adobe Premiere Pro — VideoSmile",
+    caption:
+      "Completed the online course \"Super Premiere Pro\" (video editing) at the VideoSmile online school · certificate no. 009313 · 1 May 2024.",
+  },
+  {
     src: "/certs/cert_olympiad_literature.jpg",
     title: "Olympiad Winner — Literature",
     caption:
