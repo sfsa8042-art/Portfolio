@@ -298,6 +298,11 @@ export const certificates: Certificate[] = [
     caption:
       "Supplement to the certificate. Modules: digital literacy & safe internet conduct; client servicing for payments and cash operations; advising individuals and businesses on banking products; and lending consultation — plus training and work placement, 48 academic hours in total, qualification exam graded \"excellent\". Qualified as Bank Agent by the certification board on 5 March 2026. Polytechnic College No. 50, Moscow.",
   },
+];
+
+// Less-important certificates & diplomas — collapsed behind a "Show more" toggle
+// in the Certificates section. Add further minor items here.
+export const moreCertificates: Certificate[] = [
   {
     src: "/certs/cert_miet_itschool.jpg",
     title: "Summer IT School — MIET",
