@@ -5,6 +5,7 @@ import { Navbar } from "./components/Navbar";
 import { Hero } from "./components/Hero";
 import { Work } from "./components/Work";
 import { About } from "./components/About";
+import { Certificates } from "./components/Certificates";
 import { Contact } from "./components/Contact";
 import { ProjectDetail } from "./components/ProjectDetail";
 import type { Project } from "./data/content";
@@ -33,6 +34,7 @@ export default function App() {
         <Hero />
         <Work onOpen={setActive} />
         <About />
+        <Certificates />
       </main>
       <Contact />
 

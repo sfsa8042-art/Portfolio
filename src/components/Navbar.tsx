@@ -5,6 +5,8 @@ const LINKS = [
   { label: "Home", href: "#home" },
   { label: "Work", href: "#work" },
   { label: "About", href: "#about" },
+  // longer label — hidden on the smallest screens to keep the pill compact
+  { label: "Certificates", href: "#certificates", cls: "hidden md:inline-block" },
 ];
 
 export function Navbar() {
@@ -18,7 +20,7 @@ export function Navbar() {
   }, []);
 
   useEffect(() => {
-    const ids = ["home", "work", "about", "contact"];
+    const ids = ["home", "work", "about", "certificates", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -59,6 +61,8 @@ export function Navbar() {
             key={link.href}
             href={link.href}
             className={`text-xs sm:text-sm rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-colors ${
+              link.cls ?? ""
+            } ${
               active === link.href
                 ? "text-text-primary bg-stroke/50"
                 : "text-muted hover:text-text-primary hover:bg-stroke/50"

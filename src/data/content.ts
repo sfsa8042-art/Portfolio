@@ -37,6 +37,7 @@ export type ShotGroup = { title: string; shots: Shot[] };
 export type FeatureItem = { title: string; body: string };
 export type LinkItem = { label: string; href: string; kind?: "primary" | "ghost" };
 export type Metric = { value: string; label: string };
+export type Certificate = { src: string; title: string; caption: string };
 
 export type Project = {
   slug: string;
@@ -280,4 +281,27 @@ export const socials: LinkItem[] = [
   { label: "X", href: "https://x.com/FomkinArtemiy" },
   { label: "Instagram", href: "https://www.instagram.com/artemiy_fomkin" },
   { label: "Telegram", href: "https://t.me/zrrtemx" },
+];
+
+// Standalone certificates block. Original documents are Russian; captions are
+// quality English translations of the key content (issuer, program, hours, date).
+export const certificates: Certificate[] = [
+  {
+    src: "/certs/cert_college_bankagent.jpg",
+    title: "Vocational Qualification — \"Bank Agent\"",
+    caption:
+      "State certificate of professional training in the occupation \"Bank Agent\" (code 20002). Polytechnic College No. 50 named after twice Hero of Socialist Labour N. A. Zlobin, Moscow · reg. no. 001219 · issued 17 April 2026.",
+  },
+  {
+    src: "/certs/cert_miet_itschool.jpg",
+    title: "Summer IT School — MIET",
+    caption:
+      "Course completion certificate, 94 academic hours. Computer Training Center (CCT) of the MIET National Research University · 2022 · reg. no. ЛШ-22/1-48.",
+  },
+  {
+    src: "/certs/cert_vavt_summer.jpg",
+    title: "Summer Language & Sports Program — VAVT",
+    caption:
+      "Supplementary program for school students, 90 academic hours. Russian Foreign Trade Academy (VAVT) under the Ministry of Economic Development of the Russian Federation · 3–14 June 2024.",
+  },
 ];
