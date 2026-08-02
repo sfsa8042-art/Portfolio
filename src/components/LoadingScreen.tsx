@@ -199,17 +199,20 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     if (reduced) setCurrent(LINES.length);
   }, [reduced]);
 
-  // when the log finishes, resolve into the name, then hand off
+  // when the log finishes, resolve into the name, then hand off.
+  // runs exactly once — the ref guard keeps a re-render (e.g. `booted` flipping)
+  // from tearing down the onComplete timer.
+  const resolvedRef = useRef(false);
   useEffect(() => {
-    if (current >= LINES.length && !booted) {
-      const idA = setTimeout(() => setBooted(true), reduced ? 0 : 240);
-      const idB = setTimeout(onComplete, reduced ? 650 : 1000);
-      return () => {
-        clearTimeout(idA);
-        clearTimeout(idB);
-      };
-    }
-  }, [current, booted, onComplete, reduced]);
+    if (current < LINES.length || resolvedRef.current) return;
+    resolvedRef.current = true;
+    const idA = setTimeout(() => setBooted(true), reduced ? 0 : 240);
+    const idB = setTimeout(onComplete, reduced ? 650 : 1000);
+    return () => {
+      clearTimeout(idA);
+      clearTimeout(idB);
+    };
+  }, [current, onComplete, reduced]);
 
   const progress = Math.round((Math.min(current, LINES.length) / LINES.length) * 100);
   const year = new Date().getFullYear();
