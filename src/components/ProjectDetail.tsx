@@ -272,38 +272,50 @@ export function ProjectDetail({
                   <blockquote className="text-base md:text-lg text-text-primary/90 leading-relaxed mb-6">
                     {r.quote}
                   </blockquote>
-                  <figcaption className="mt-auto flex items-center gap-4 pt-4 border-t border-stroke">
+                  <figcaption className="mt-auto pt-4 border-t border-stroke">
+                    <div className="flex items-center gap-4">
+                      <button
+                        onClick={() => setLightbox(r.src)}
+                        className="group relative shrink-0 w-14 h-[72px] rounded-md overflow-hidden border border-stroke bg-white cursor-zoom-in"
+                        aria-label={`View the ${r.org} review`}
+                      >
+                        <img
+                          src={r.src}
+                          alt=""
+                          loading="lazy"
+                          className="w-full h-full object-cover object-top"
+                        />
+                        <span className="absolute bottom-1 right-1 w-4 h-4 flex items-center justify-center rounded-[3px] bg-bg/80 text-[9px] text-text-primary">
+                          ⤢
+                        </span>
+                      </button>
+                      <div className="min-w-0">
+                        <div className="text-sm text-text-primary truncate">
+                          {r.org}
+                        </div>
+                        <div className="text-xs text-muted">{r.meta}</div>
+                        {r.url && (
+                          <a
+                            href={r.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-xs text-muted hover:text-text-primary transition-colors"
+                          >
+                            {r.url.replace(/^https?:\/\/(www\.)?/, "")} ↗
+                          </a>
+                        )}
+                      </div>
+                    </div>
                     <button
                       onClick={() => setLightbox(r.src)}
-                      className="group relative shrink-0 w-14 h-[72px] rounded-md overflow-hidden border border-stroke bg-white cursor-zoom-in"
-                      aria-label={`View the ${r.org} review`}
+                      className="group relative mt-4 inline-flex items-center gap-2 rounded-full text-sm px-5 py-2.5 bg-text-primary text-bg transition-all hover:scale-[1.03]"
                     >
-                      <img
-                        src={r.src}
-                        alt=""
-                        loading="lazy"
-                        className="w-full h-full object-cover object-top"
+                      <span
+                        className="absolute rounded-full accent-gradient opacity-0 group-hover:opacity-100 transition-opacity -z-10"
+                        style={{ inset: "-2px" }}
                       />
-                      <span className="absolute inset-0 flex items-center justify-center bg-bg/40 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-text-primary">
-                        ⤢
-                      </span>
+                      View original document ⤢
                     </button>
-                    <div className="min-w-0">
-                      <div className="text-sm text-text-primary truncate">
-                        {r.org}
-                      </div>
-                      <div className="text-xs text-muted">{r.meta}</div>
-                      {r.url && (
-                        <a
-                          href={r.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-xs text-muted hover:text-text-primary transition-colors"
-                        >
-                          {r.url.replace(/^https?:\/\/(www\.)?/, "")} ↗
-                        </a>
-                      )}
-                    </div>
                   </figcaption>
                 </figure>
               ))}

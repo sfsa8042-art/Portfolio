@@ -180,7 +180,7 @@ export const projects: Project[] = [
         },
         {
           org: "\"Rapsodia\" Restaurant · Gorod LLC",
-          meta: "Official review · 7 Jun 2026",
+          meta: "L. V. Voroshnin, Director General · 7 Jun 2026",
           url: "https://rapsodia.ru",
           quote:
             "For food service — a sector under heavy regulatory load and frequent inspections — combining fire-safety, sanitary and labour audits into a single service is well-grounded and practically valuable. A promising solution for the restaurant segment that can cut fines, downtime and preparation costs.",

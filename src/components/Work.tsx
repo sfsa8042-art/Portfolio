@@ -103,6 +103,13 @@ export function Work({ onOpen }: { onOpen: (p: Project) => void }) {
                       {project.description}
                     </p>
                     <div className="flex flex-wrap gap-2">
+                      {project.detail.reviews &&
+                        project.detail.reviews.length > 0 && (
+                          <span className="flex items-center gap-1.5 text-[11px] text-text-primary border border-[#89AACC]/45 bg-[#89AACC]/10 rounded-full px-3 py-1">
+                            <span className="w-1 h-1 rounded-full accent-gradient" />
+                            {project.detail.reviews.length} industry reviews
+                          </span>
+                        )}
                       {project.tags.map((tag) => (
                         <span
                           key={tag}
