@@ -249,6 +249,68 @@ export function ProjectDetail({
           </section>
         )}
 
+        {/* reviews */}
+        {d.reviews && d.reviews.length > 0 && (
+          <section className="mb-16">
+            <h2 className="text-xs text-muted uppercase tracking-[0.25em] mb-2">
+              Reviews
+            </h2>
+            <p className="text-xs text-muted mb-6 max-w-[640px]">
+              Independent evaluations of the project. Originals are in Russian —
+              quotes are translated; open a document to see the letterhead, stamp
+              and signature.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {d.reviews.map((r) => (
+                <figure
+                  key={r.src}
+                  className="flex flex-col rounded-2xl border border-stroke bg-surface p-6 md:p-7 transition-colors hover:border-white/20"
+                >
+                  <span className="font-display italic text-4xl leading-none text-text-primary/20 mb-1 select-none">
+                    &ldquo;
+                  </span>
+                  <blockquote className="text-base md:text-lg text-text-primary/90 leading-relaxed mb-6">
+                    {r.quote}
+                  </blockquote>
+                  <figcaption className="mt-auto flex items-center gap-4 pt-4 border-t border-stroke">
+                    <button
+                      onClick={() => setLightbox(r.src)}
+                      className="group relative shrink-0 w-14 h-[72px] rounded-md overflow-hidden border border-stroke bg-white cursor-zoom-in"
+                      aria-label={`View the ${r.org} review`}
+                    >
+                      <img
+                        src={r.src}
+                        alt=""
+                        loading="lazy"
+                        className="w-full h-full object-cover object-top"
+                      />
+                      <span className="absolute inset-0 flex items-center justify-center bg-bg/40 opacity-0 group-hover:opacity-100 transition-opacity text-xs text-text-primary">
+                        ⤢
+                      </span>
+                    </button>
+                    <div className="min-w-0">
+                      <div className="text-sm text-text-primary truncate">
+                        {r.org}
+                      </div>
+                      <div className="text-xs text-muted">{r.meta}</div>
+                      {r.url && (
+                        <a
+                          href={r.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-xs text-muted hover:text-text-primary transition-colors"
+                        >
+                          {r.url.replace(/^https?:\/\/(www\.)?/, "")} ↗
+                        </a>
+                      )}
+                    </div>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* screenshots gallery */}
         {((d.shots && d.shots.length > 0) ||
           (d.shotGroups && d.shotGroups.length > 0)) && (

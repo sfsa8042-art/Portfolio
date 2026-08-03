@@ -37,6 +37,13 @@ export type ShotGroup = { title: string; shots: Shot[] };
 export type FeatureItem = { title: string; body: string };
 export type LinkItem = { label: string; href: string; kind?: "primary" | "ghost" };
 export type Metric = { value: string; label: string };
+export type Review = {
+  org: string;
+  meta: string; // signer / role · date
+  quote: string; // translated pull-quote (originals are Russian)
+  src: string; // full scan for the lightbox
+  url?: string;
+};
 export type Certificate = { src: string; title: string; caption: string };
 // A two-sided card (e.g. a scuba certification) that flips to reveal its back.
 export type DivingCard = {
@@ -70,6 +77,7 @@ export type Project = {
     heroImage?: string; // real screenshot shown big at top instead of mockup
     shots?: Shot[]; // real screenshots (from /public/shots/…)
     shotGroups?: ShotGroup[]; // grouped materials (screens, slides, documents)
+    reviews?: Review[]; // third-party reviews / endorsements
     embeds?: LinkItem[]; // live sites / materials to open
     embedLive?: string; // url to show inside an iframe on the detail page
   };
@@ -159,6 +167,24 @@ export const projects: Project[] = [
             { src: "/shots/nfq_std_checklist.jpg", caption: "Checklist — one of three 52-point checklists (fire safety shown)" },
             { src: "/shots/nfq_std_score.jpg", caption: "NFQ Score — scoring formula, risk scale and P1/P2/P3 classification" },
           ],
+        },
+      ],
+      reviews: [
+        {
+          org: "Avangard Safety Group",
+          meta: "M. I. Podolkhov, Director General · 10 Apr 2026",
+          url: "https://www.avangard-sp.ru",
+          quote:
+            "NFQ answers current market conditions and reflects the objective, growing need for systemic regulatory-risk management. Consolidating several inspection areas into one service is well-founded — a promising, scalable solution on the emerging integrated-audit market. We are considering taking part in a pilot.",
+          src: "/shots/nfq_review_avangard.jpg",
+        },
+        {
+          org: "\"Rapsodia\" Restaurant · Gorod LLC",
+          meta: "Official review · 7 Jun 2026",
+          url: "https://rapsodia.ru",
+          quote:
+            "For food service — a sector under heavy regulatory load and frequent inspections — combining fire-safety, sanitary and labour audits into a single service is well-grounded and practically valuable. A promising solution for the restaurant segment that can cut fines, downtime and preparation costs.",
+          src: "/shots/nfq_review_rapsodia.jpg",
         },
       ],
       embeds: [
