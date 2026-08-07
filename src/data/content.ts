@@ -20,7 +20,7 @@ export const about = {
   paragraphs: [
     "I'm passionate about international business, strategy, and building products that solve real problems. My work combines business research, product thinking, and technology.",
     "I explore how companies expand into new markets, make strategic decisions, and create sustainable competitive advantages. I believe the best way to learn business is by building, testing ideas, and shipping.",
-    "Long-term, my goal is to build companies that create lasting impact on a global scale.",
+    "Long-term, I want to build companies that solve real problems and can grow beyond a single market.",
   ],
   interests: [
     "International Business",
@@ -89,7 +89,7 @@ export const projects: Project[] = [
     title: "NFQ",
     category: "Startup / Compliance",
     description:
-      "The only '3-in-1' compliance audit in Russia — fire safety, sanitary norms and labour safety checked in a single visit, where the rest of the market offers single-area specialists only. One report: an automated NFQ Score, the fine exposure in rubles and a prioritized fix plan.",
+      "A '3-in-1' compliance audit for Russia — fire safety, sanitary norms and labour safety checked in a single visit, where the market otherwise offers single-area specialists. One report: an automated NFQ Score, the fine exposure in rubles and a prioritized fix plan.",
     year: "2026",
     span: "md:col-span-7",
     tags: ["Audit methodology", "Risk scoring", "SaaS roadmap"],
@@ -102,13 +102,13 @@ export const projects: Project[] = [
       status: "Live product · 2026",
       overview: [
         "In Russia a small business lives under three separate mandatory inspection regimes — fire safety (EMERCOM), sanitary norms (Rospotrebnadzor) and labour safety (Rostrud) — each with its own inspectors, its own fines and, in the worst case, a 90-day suspension of operations. NFQ (New Found of Quality) replaces all three with a single on-site audit and one clear report.",
-        "There is no comparable company on the Russian market. The alternatives each cover just one piece: a private fire inspector checks fire safety alone, a lab measures sanitary compliance, an outsourced HSE service handles labour safety, and large consultancies sell broad strategy starting at ₽400,000 with turnaround in months. NFQ is the only provider that does all three at once — combining the breadth of a consultancy, the depth of a niche specialist and a price small and mid-sized businesses can actually afford (₽80,000 vs. roughly ₽90,000 for three separate specialists).",
+        "In our market research we didn't find a company offering all three checks in a single service. The alternatives each cover just one piece: a private fire inspector checks fire safety alone, a lab measures sanitary compliance, an outsourced HSE service handles labour safety, and large consultancies sell broad strategy starting at ₽400,000 with turnaround in months. NFQ brings all three together — the breadth of a consultancy, the depth of a niche specialist and a price small and mid-sized businesses can actually afford (₽80,000 vs. roughly ₽90,000 for three separate specialists).",
         "The client gets one deliverable: every violation mapped to the exact article of the administrative code (КоАП), prioritized P1/P2/P3, with the maximum fine attached and a step-by-step plan — down to vetted contractors — to fix it. Under the hood is a documented methodology: three 52-point checklists (156 control points in total), an NFQ Score from 0 to 100 computed by a weighted risk formula (fire 0.40 · sanitary 0.35 · labour 0.25), and a fine-exposure estimate built on the real code. Full cycle to the report is about 7–10 days, with no shutdown of the business.",
         "NFQ is built to prevent problems before an inspection happens rather than clean up afterwards — and to stay on as a single point of responsibility until the site is fully compliant. It is designed to scale from a manual audit into a SaaS platform, with an internal operations platform (\"Expert OS\") already running the day-to-day. The project took 1st place at the \"Step into Business\" / \"Science for Life\" city conference and a prize at the All-Russian \"Creativity of the Young\" conference (MIET).",
       ],
       features: [
         { title: "Three inspections, one audit", body: "Fire safety, sanitary norms and labour safety checked together in a single visit — 156 control points (52 per direction), each tied to a specific Russian legal norm." },
-        { title: "No equivalent on the market", body: "Rivals cover one area each — fire, sanitary or labour — or, for big consultancies, start at ₽400,000 and take months. NFQ is the only true 3-in-1: consultancy breadth, specialist depth and an SMB price in one." },
+        { title: "One service, not three vendors", body: "Most options cover a single area — fire, sanitary or labour — while big consultancies start at ₽400,000 and take months. In our research we found no direct 3-in-1 alternative: NFQ combines consultancy breadth, specialist depth and an SMB price." },
         { title: "NFQ Score (0–100)", body: "A single risk index computed from a weighted formula (fire 0.40 · sanitary 0.35 · labour 0.25), with a per-direction breakdown." },
         { title: "Fine exposure in rubles", body: "Every violation linked to a Code-of-Administrative-Offences (КоАП) article with its maximum fine — real numbers, not vague risk." },
         { title: "Prioritized fix plan", body: "A P1→P2→P3 remediation roadmap with owners, deadlines and vetted contractors, plus an optional re-audit — NFQ stays the single point of responsibility to the finish." },
@@ -116,7 +116,7 @@ export const projects: Project[] = [
       ],
       metrics: [
         { value: "3-in-1", label: "Inspections in one visit" },
-        { value: "0", label: "Direct competitors in Russia" },
+        { value: "2", label: "Independent industry reviews" },
         { value: "156", label: "Control points · 52 per area" },
         { value: "3", label: "Awards & diplomas" },
       ],
@@ -305,7 +305,7 @@ export const projects: Project[] = [
 ];
 
 export const stats: Metric[] = [
-  { value: "3", label: "Live projects" },
+  { value: "3", label: "Projects" },
   { value: "3", label: "Industries explored" },
   { value: "∞", label: "Ideas to test" },
 ];
