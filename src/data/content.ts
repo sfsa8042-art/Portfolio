@@ -6,7 +6,7 @@ export const profile = {
   name: "Artemiy Fomkin",
   initials: "AF",
   eyebrow: "PORTFOLIO — '26",
-  roles: ["Founder", "Strategist", "Builder", "Student"],
+  roles: ["Founder", "Builder", "Student"],
   roleLinePrefix: "A",
   roleLineSuffix: "focused on real-world problems.",
   tagline:
@@ -99,12 +99,12 @@ export const projects: Project[] = [
     detail: {
       tagline: "Three inspections. One visit. Full protection.",
       role: "Founder · Methodology & Product",
-      status: "Live product · 2026",
+      status: "Award-winning concept · 2026",
       overview: [
         "In Russia a small business lives under three separate mandatory inspection regimes — fire safety (EMERCOM), sanitary norms (Rospotrebnadzor) and labour safety (Rostrud) — each with its own inspectors, its own fines and, in the worst case, a 90-day suspension of operations. NFQ (New Found of Quality) replaces all three with a single on-site audit and one clear report.",
         "In our market research we didn't find a company offering all three checks in a single service. The alternatives each cover just one piece: a private fire inspector checks fire safety alone, a lab measures sanitary compliance, an outsourced HSE service handles labour safety, and large consultancies sell broad strategy starting at ₽400,000 with turnaround in months. NFQ brings all three together — the breadth of a consultancy, the depth of a niche specialist and a price small and mid-sized businesses can actually afford (₽80,000 vs. roughly ₽90,000 for three separate specialists).",
         "The client gets one deliverable: every violation mapped to the exact article of the administrative code (КоАП), prioritized P1/P2/P3, with the maximum fine attached and a step-by-step plan — down to vetted contractors — to fix it. Under the hood is a documented methodology: three 52-point checklists (156 control points in total), an NFQ Score from 0 to 100 computed by a weighted risk formula (fire 0.40 · sanitary 0.35 · labour 0.25), and a fine-exposure estimate built on the real code. Full cycle to the report is about 7–10 days, with no shutdown of the business.",
-        "NFQ is built to prevent problems before an inspection happens rather than clean up afterwards — and to stay on as a single point of responsibility until the site is fully compliant. It is designed to scale from a manual audit into a SaaS platform, with an internal operations platform (\"Expert OS\") already running the day-to-day. The project took 1st place at the \"Step into Business\" / \"Science for Life\" city conference and a prize at the All-Russian \"Creativity of the Young\" conference (MIET).",
+        "NFQ is built to prevent problems before an inspection happens rather than clean up afterwards — and to stay on as a single point of responsibility until the site is fully compliant. It is designed to scale from a manual audit into a SaaS platform, with an internal operations platform (\"Expert OS\") to run the day-to-day. The project took 1st place at the \"Step into Business\" / \"Science for Life\" city conference and a prize at the All-Russian \"Creativity of the Young\" conference (MIET).",
       ],
       features: [
         { title: "Three inspections, one audit", body: "Fire safety, sanitary norms and labour safety checked together in a single visit — 156 control points (52 per direction), each tied to a specific Russian legal norm." },

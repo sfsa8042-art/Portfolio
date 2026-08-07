@@ -343,7 +343,7 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: booted ? 1 : 0 }}
               transition={{ duration: 0.6, delay: booted ? 0.45 : 0 }}
             >
-              Founder · Strategist · Builder
+              Founder · Builder · Student
             </motion.p>
           </motion.div>
         </motion.div>
