@@ -302,6 +302,12 @@ export const certificates: Certificate[] = [
 // in the Certificates section. Add further minor items here.
 export const moreCertificates: Certificate[] = [
   {
+    src: "/certs/cert_efset_english.jpg",
+    title: "English — C2 Proficient (EF SET)",
+    caption:
+      "EF SET English Certificate — overall C2 Proficient (71/100), the highest level on the CEFR scale. Reading C2, Listening C1. Awarded 13 Aug 2026 · verifiable at cert.efset.org/93Nwem.",
+  },
+  {
     src: "/certs/cert_miet_itschool.jpg",
     title: "Summer IT School — MIET",
     caption:
