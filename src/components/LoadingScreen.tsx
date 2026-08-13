@@ -124,7 +124,7 @@ const ACCENT = "text-[#89AACC]";
 const LINES: Line[] = [
   { m: "$", mc: "text-muted", t: ' build --profile "Artemiy Fomkin"', tc: "text-text-primary", speed: 16 },
   { m: "✓", mc: ACCENT, t: " identity ............. compiled", tc: "text-muted", speed: 9 },
-  { m: "✓", mc: ACCENT, t: " projects ............. NFQ · APEX · EntryLens", tc: "text-text-primary/90", speed: 9 },
+  { m: "✓", mc: ACCENT, t: " projects ............. NFQ · APEX", tc: "text-text-primary/90", speed: 9 },
   { m: "✓", mc: ACCENT, t: " recognition .......... 3 awards · 2 conferences", tc: "text-muted", speed: 9 },
   { m: "✓", mc: ACCENT, t: " assets ............... optimized", tc: "text-muted", speed: 9 },
   { m: "▸", mc: ACCENT, t: " launching experience", tc: "text-text-primary", speed: 13 },

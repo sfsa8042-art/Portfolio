@@ -62,7 +62,7 @@ export type Project = {
   span: string;
   href?: string; // live site (card + detail)
   tags: string[];
-  mockup: "apex" | "nfq" | "entrylens" | "placeholder";
+  mockup: "apex" | "nfq" | "placeholder";
   cardImage?: string; // real screenshot for the grid card (falls back to mockup)
   badge?: string; // optional highlight badge (e.g. "Award-winning")
 
@@ -249,64 +249,11 @@ export const projects: Project[] = [
       embedLive: "https://www.apex-racing.online/",
     },
   },
-  {
-    slug: "entrylens",
-    title: "EntryLens",
-    category: "Product / SaaS",
-    description:
-      "A decision-support platform that helps businesses evaluate international expansion opportunities using structured market analysis and transparent scoring models.",
-    year: "2026",
-    span: "md:col-span-7",
-    tags: ["Market analysis", "Scoring model", "Strategy"],
-    mockup: "entrylens",
-    detail: {
-      tagline: "Decision support for international expansion.",
-      role: "Founder · Product & Research",
-      status: "In development · 2026",
-      overview: [
-        "EntryLens helps companies decide where to expand next. Instead of gut feeling and scattered reports, it turns market entry into a structured, transparent decision.",
-        "Each candidate market is scored across multiple signals — demand, competition, regulation, cost of entry and more — using a transparent model where every input is visible and adjustable. The output is a ranked shortlist a founder or strategy team can actually defend.",
-        "The goal is to make expensive, high-stakes expansion calls feel less like guesswork and more like a repeatable process.",
-      ],
-      features: [
-        { title: "Transparent scoring", body: "Every market gets a score built from visible, weighted signals — no black box." },
-        { title: "Market comparison", body: "Rank and compare candidate markets side by side on the metrics that matter." },
-        { title: "Structured research", body: "Turns messy market research into a consistent, repeatable framework." },
-        { title: "Defensible output", body: "A ranked shortlist with the reasoning attached — ready for a strategy deck." },
-      ],
-      metrics: [
-        { value: "6", label: "Scoring signals" },
-        { value: "1", label: "Ranked shortlist" },
-        { value: "0", label: "Black boxes" },
-      ],
-    },
-  },
-  {
-    slug: "next",
-    title: "More soon",
-    category: "In progress",
-    description:
-      "Another project is on the way. This slot is a placeholder — swap it in src/data/content.ts when it's ready.",
-    year: "—",
-    span: "md:col-span-5",
-    tags: ["Coming up"],
-    mockup: "placeholder",
-    detail: {
-      tagline: "Something new is in the works.",
-      role: "TBA",
-      status: "In progress",
-      overview: [
-        "This project isn't public yet. When it's ready, its details, screenshots and links will live here.",
-      ],
-      features: [],
-    },
-  },
-
 ];
 
 export const stats: Metric[] = [
-  { value: "3", label: "Projects" },
-  { value: "3", label: "Industries explored" },
+  { value: "2", label: "Projects" },
+  { value: "2", label: "Industries explored" },
   { value: "∞", label: "Ideas to test" },
 ];
 

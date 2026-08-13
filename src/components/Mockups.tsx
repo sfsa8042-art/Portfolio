@@ -156,41 +156,6 @@ export function NfqMockup() {
   );
 }
 
-// ── EntryLens — market expansion scoring ──
-export function EntryLensMockup() {
-  const rows = [
-    { m: "Germany", s: 87, c: "#5aa06a" },
-    { m: "UAE", s: 74, c: "#89aacc" },
-    { m: "Poland", s: 68, c: "#89aacc" },
-    { m: "Brazil", s: 52, c: "#c9a05a" },
-    { m: "India", s: 41, c: "#c85a5a" },
-  ];
-  return (
-    <svg viewBox="0 0 600 340" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-      <rect width="600" height="340" fill="#08090a" />
-      <BrowserChrome url="entrylens.app/markets" />
-
-      <text x="20" y="58" fontFamily="Inter, sans-serif" fontWeight="600" fontSize="15" fill="#f2f2f2">Market fit ranking</text>
-      <text x="20" y="76" fontFamily="monospace" fontSize="10" fill="#6a6a6f">Expansion scoring · 6 signals</text>
-
-      <g fontFamily="Inter, sans-serif" fontSize="11">
-        {rows.map((r, i) => {
-          const y = 100 + i * 44;
-          return (
-            <g key={r.m}>
-              <rect x="20" y={y} width="560" height="34" rx="6" fill="#131315" />
-              <text x="36" y={y + 22} fill="#e4e4e4" fontWeight="500">{r.m}</text>
-              <rect x="140" y={y + 13} width="320" height="8" rx="4" fill="#1e1e21" />
-              <rect x="140" y={y + 13} width={(r.s / 100) * 320} height="8" rx="4" fill={r.c} />
-              <text x="564" y={y + 22} textAnchor="end" fill="#f2f2f2" fontFamily="monospace" fontSize="12">{r.s}</text>
-            </g>
-          );
-        })}
-      </g>
-    </svg>
-  );
-}
-
 // ── Placeholder ──
 export function PlaceholderMockup() {
   return (
@@ -208,6 +173,5 @@ export function PlaceholderMockup() {
 export const mockups = {
   apex: ApexMockup,
   nfq: NfqMockup,
-  entrylens: EntryLensMockup,
   placeholder: PlaceholderMockup,
 } as const;
