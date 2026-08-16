@@ -168,6 +168,17 @@ export const projects: Project[] = [
             { src: "/shots/nfq_std_score.jpg", caption: "NFQ Score — scoring formula, risk scale and P1/P2/P3 classification" },
           ],
         },
+        {
+          title: "Business plan — English translation",
+          shots: [
+            { src: "/shots/nfq_bp_en_cover.jpg", caption: "Cover — the full NFQ business plan, translated to English. School No. 2045 · Moscow, 2026" },
+            { src: "/shots/nfq_bp_en_growth.jpg", caption: "Relevance — inspections grew ~8× and violations ~15× (2021–2023). Figure 1" },
+            { src: "/shots/nfq_bp_en_platform.jpg", caption: "Violations by industry (Figure 2) and the NFQ landing page" },
+            { src: "/shots/nfq_bp_en_canvas.jpg", caption: "Business Model Canvas — partners, activities, value propositions, segments and channels" },
+            { src: "/shots/nfq_bp_en_finance.jpg", caption: "Financial model — year-1 sales plan (131 audits) with SMART goals and payback by month 6" },
+            { src: "/shots/nfq_bp_en_roadmap.jpg", caption: "Roadmap and Gantt chart — five stages across the first year, from methodology to scaling" },
+          ],
+        },
       ],
       reviews: [
         {
@@ -193,7 +204,8 @@ export const projects: Project[] = [
         { label: "Open compliance report", href: "/sites/nfq-report.html" },
         { label: "Pitch deck (PDF)", href: "/docs/nfq-pitch-deck.pdf" },
         { label: "Methodology standard (PDF)", href: "/docs/nfq-standard-v2.pdf" },
-        { label: "Business plan (PDF)", href: "/docs/nfq-business-plan.pdf" },
+        { label: "Business plan · EN (PDF)", href: "/docs/nfq-business-plan-en.pdf" },
+        { label: "Business plan · RU (PDF)", href: "/docs/nfq-business-plan.pdf" },
       ],
       embedLive: "/sites/nfq-landing.html",
     },
