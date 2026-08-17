@@ -79,6 +79,8 @@ export type Project = {
     shotGroups?: ShotGroup[]; // grouped materials (screens, slides, documents)
     reviews?: Review[]; // third-party reviews / endorsements
     embeds?: LinkItem[]; // live sites / materials to open
+    // downloadable documents split by language so originals vs translations are clear
+    documents?: { original: LinkItem[]; translated: LinkItem[] };
     embedLive?: string; // url to show inside an iframe on the detail page
   };
 };
@@ -161,11 +163,20 @@ export const projects: Project[] = [
           ],
         },
         {
-          title: "Methodology — NFQ Standard v2.0",
+          title: "Methodology · NFQ Standard v2.0 — original (RU)",
           shots: [
             { src: "/shots/nfq_std_methodology.jpg", caption: "Inspection methodology — what's checked, how, and the legal consequence" },
             { src: "/shots/nfq_std_checklist.jpg", caption: "Checklist — one of three 52-point checklists (fire safety shown)" },
             { src: "/shots/nfq_std_score.jpg", caption: "NFQ Score — scoring formula, risk scale and P1/P2/P3 classification" },
+          ],
+        },
+        {
+          title: "Methodology · NFQ Standard v2.0 — English translation",
+          shots: [
+            { src: "/shots/nfq_std_en_cover.jpg", caption: "Cover — NFQ Standard of the integrated audit methodology (English translation)" },
+            { src: "/shots/nfq_std_en_checklist.jpg", caption: "Checklist — a 52-point checklist with method, Russian legal norm and criticality" },
+            { src: "/shots/nfq_std_en_score.jpg", caption: "NFQ Score system — the scoring formula, risk-level scale and P1/P2/P3 classification" },
+            { src: "/shots/nfq_std_en_casestudy.jpg", caption: "Worked example — critical (P1) violations mapped to fines, with a remediation plan" },
           ],
         },
         {
@@ -202,11 +213,18 @@ export const projects: Project[] = [
         { label: "Open landing site", href: "/sites/nfq-landing.html", kind: "primary" },
         { label: "Open Expert OS platform", href: "/sites/nfq-expert-os.html" },
         { label: "Open compliance report", href: "/sites/nfq-report.html" },
-        { label: "Pitch deck (PDF)", href: "/docs/nfq-pitch-deck.pdf" },
-        { label: "Methodology standard (PDF)", href: "/docs/nfq-standard-v2.pdf" },
-        { label: "Business plan · EN (PDF)", href: "/docs/nfq-business-plan-en.pdf" },
-        { label: "Business plan · RU (PDF)", href: "/docs/nfq-business-plan.pdf" },
       ],
+      documents: {
+        original: [
+          { label: "Pitch deck", href: "/docs/nfq-pitch-deck.pdf" },
+          { label: "Methodology · NFQ Standard v2.0", href: "/docs/nfq-standard-v2.pdf" },
+          { label: "Business plan", href: "/docs/nfq-business-plan.pdf" },
+        ],
+        translated: [
+          { label: "Business plan", href: "/docs/nfq-business-plan-en.pdf" },
+          { label: "Methodology · NFQ Standard v2.0", href: "/docs/nfq-standard-v2-en.pdf" },
+        ],
+      },
       embedLive: "/sites/nfq-landing.html",
     },
   },
