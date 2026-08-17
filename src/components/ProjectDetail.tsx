@@ -187,6 +187,78 @@ export function ProjectDetail({
           )}
         </section>
 
+        {/* documents — originals vs translations */}
+        {d.documents &&
+          (d.documents.original.length > 0 ||
+            d.documents.translated.length > 0) && (
+            <section className="mb-16">
+              <h2 className="text-xs text-muted uppercase tracking-[0.25em] mb-2">
+                Documents
+              </h2>
+              <p className="text-xs text-muted mb-6 max-w-[640px]">
+                The source documents are in Russian; English translations are
+                provided alongside them.
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {[
+                  {
+                    title: "Original",
+                    badge: "RU",
+                    accent: false,
+                    items: d.documents.original,
+                  },
+                  {
+                    title: "English translation",
+                    badge: "EN",
+                    accent: true,
+                    items: d.documents.translated,
+                  },
+                ].map((grp) =>
+                  grp.items.length > 0 ? (
+                    <div
+                      key={grp.badge}
+                      className="rounded-2xl border border-stroke bg-surface p-6"
+                    >
+                      <div className="flex items-center gap-2 mb-4">
+                        <span
+                          className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
+                            grp.accent
+                              ? "bg-[#89AACC]/15 text-[#89AACC] border border-[#89AACC]/40"
+                              : "bg-white/5 text-muted border border-stroke"
+                          }`}
+                        >
+                          {grp.badge}
+                        </span>
+                        <h3 className="text-sm text-text-primary">
+                          {grp.title}
+                        </h3>
+                      </div>
+                      <ul className="space-y-2">
+                        {grp.items.map((it) => (
+                          <li key={it.href}>
+                            <a
+                              href={it.href}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="group flex items-center justify-between gap-3 rounded-xl border border-stroke px-4 py-3 transition-colors hover:border-white/25"
+                            >
+                              <span className="text-sm text-text-primary">
+                                {it.label}
+                              </span>
+                              <span className="text-xs text-muted group-hover:text-text-primary transition-colors whitespace-nowrap">
+                                PDF ↗
+                              </span>
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null
+                )}
+              </div>
+            </section>
+          )}
+
         {/* overview */}
         <section className="mb-16 max-w-[720px]">
           <h2 className="text-xs text-muted uppercase tracking-[0.25em] mb-6">
@@ -362,78 +434,6 @@ export function ProjectDetail({
               ))}
           </section>
         )}
-
-        {/* documents — originals vs translations */}
-        {d.documents &&
-          (d.documents.original.length > 0 ||
-            d.documents.translated.length > 0) && (
-            <section className="mb-16">
-              <h2 className="text-xs text-muted uppercase tracking-[0.25em] mb-2">
-                Documents
-              </h2>
-              <p className="text-xs text-muted mb-6 max-w-[640px]">
-                The source documents are in Russian; English translations are
-                provided alongside them.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {[
-                  {
-                    title: "Original",
-                    badge: "RU",
-                    accent: false,
-                    items: d.documents.original,
-                  },
-                  {
-                    title: "English translation",
-                    badge: "EN",
-                    accent: true,
-                    items: d.documents.translated,
-                  },
-                ].map((grp) =>
-                  grp.items.length > 0 ? (
-                    <div
-                      key={grp.badge}
-                      className="rounded-2xl border border-stroke bg-surface p-6"
-                    >
-                      <div className="flex items-center gap-2 mb-4">
-                        <span
-                          className={`text-[10px] font-mono px-1.5 py-0.5 rounded ${
-                            grp.accent
-                              ? "bg-[#89AACC]/15 text-[#89AACC] border border-[#89AACC]/40"
-                              : "bg-white/5 text-muted border border-stroke"
-                          }`}
-                        >
-                          {grp.badge}
-                        </span>
-                        <h3 className="text-sm text-text-primary">
-                          {grp.title}
-                        </h3>
-                      </div>
-                      <ul className="space-y-2">
-                        {grp.items.map((it) => (
-                          <li key={it.href}>
-                            <a
-                              href={it.href}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="group flex items-center justify-between gap-3 rounded-xl border border-stroke px-4 py-3 transition-colors hover:border-white/25"
-                            >
-                              <span className="text-sm text-text-primary">
-                                {it.label}
-                              </span>
-                              <span className="text-xs text-muted group-hover:text-text-primary transition-colors whitespace-nowrap">
-                                PDF ↗
-                              </span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null
-                )}
-              </div>
-            </section>
-          )}
 
         {/* footer cta */}
         <section className="pt-8 border-t border-stroke flex items-center justify-between">
