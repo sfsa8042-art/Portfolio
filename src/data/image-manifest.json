@@ -1,0 +1,312 @@
+{
+  "/shots/apex_cars.jpg": {
+    "width": 1600,
+    "height": 921,
+    "srcSet": "/optimized/shots/apex_cars-640.webp 640w, /optimized/shots/apex_cars-1200.webp 1200w"
+  },
+  "/shots/apex_dashboard.jpg": {
+    "width": 1600,
+    "height": 921,
+    "srcSet": "/optimized/shots/apex_dashboard-640.webp 640w, /optimized/shots/apex_dashboard-1200.webp 1200w"
+  },
+  "/shots/apex_hero.jpg": {
+    "width": 1600,
+    "height": 921,
+    "srcSet": "/optimized/shots/apex_hero-640.webp 640w, /optimized/shots/apex_hero-1200.webp 1200w"
+  },
+  "/shots/apex_telemetry.jpg": {
+    "width": 1600,
+    "height": 921,
+    "srcSet": "/optimized/shots/apex_telemetry-640.webp 640w, /optimized/shots/apex_telemetry-1200.webp 1200w"
+  },
+  "/shots/apex_tracks.jpg": {
+    "width": 1600,
+    "height": 921,
+    "srcSet": "/optimized/shots/apex_tracks-640.webp 640w, /optimized/shots/apex_tracks-1200.webp 1200w"
+  },
+  "/shots/nfq_bp_canvas.jpg": {
+    "width": 1075,
+    "height": 1521,
+    "srcSet": "/optimized/shots/nfq_bp_canvas-640.webp 640w, /optimized/shots/nfq_bp_canvas-1075.webp 1075w"
+  },
+  "/shots/nfq_bp_competitors.jpg": {
+    "width": 1075,
+    "height": 1521,
+    "srcSet": "/optimized/shots/nfq_bp_competitors-640.webp 640w, /optimized/shots/nfq_bp_competitors-1075.webp 1075w"
+  },
+  "/shots/nfq_bp_en_canvas.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_bp_en_canvas-640.webp 640w, /optimized/shots/nfq_bp_en_canvas-1150.webp 1150w"
+  },
+  "/shots/nfq_bp_en_cover.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_bp_en_cover-640.webp 640w, /optimized/shots/nfq_bp_en_cover-1150.webp 1150w"
+  },
+  "/shots/nfq_bp_en_finance.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_bp_en_finance-640.webp 640w, /optimized/shots/nfq_bp_en_finance-1150.webp 1150w"
+  },
+  "/shots/nfq_bp_en_growth.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_bp_en_growth-640.webp 640w, /optimized/shots/nfq_bp_en_growth-1150.webp 1150w"
+  },
+  "/shots/nfq_bp_en_platform.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_bp_en_platform-640.webp 640w, /optimized/shots/nfq_bp_en_platform-1150.webp 1150w"
+  },
+  "/shots/nfq_bp_en_roadmap.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_bp_en_roadmap-640.webp 640w, /optimized/shots/nfq_bp_en_roadmap-1150.webp 1150w"
+  },
+  "/shots/nfq_bp_finance.jpg": {
+    "width": 1075,
+    "height": 1521,
+    "srcSet": "/optimized/shots/nfq_bp_finance-640.webp 640w, /optimized/shots/nfq_bp_finance-1075.webp 1075w"
+  },
+  "/shots/nfq_cert_diploma.jpg": {
+    "width": 1240,
+    "height": 1754,
+    "srcSet": "/optimized/shots/nfq_cert_diploma-640.webp 640w, /optimized/shots/nfq_cert_diploma-1200.webp 1200w"
+  },
+  "/shots/nfq_cert_gramota.jpg": {
+    "width": 989,
+    "height": 1400,
+    "srcSet": "/optimized/shots/nfq_cert_gramota-640.webp 640w, /optimized/shots/nfq_cert_gramota-989.webp 989w"
+  },
+  "/shots/nfq_cert_miet.jpg": {
+    "width": 1658,
+    "height": 1240,
+    "srcSet": "/optimized/shots/nfq_cert_miet-640.webp 640w, /optimized/shots/nfq_cert_miet-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_audience.jpg": {
+    "width": 1400,
+    "height": 738,
+    "srcSet": "/optimized/shots/nfq_landing_audience-640.webp 640w, /optimized/shots/nfq_landing_audience-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_hero.jpg": {
+    "width": 1600,
+    "height": 977,
+    "srcSet": "/optimized/shots/nfq_landing_hero-640.webp 640w, /optimized/shots/nfq_landing_hero-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_how.jpg": {
+    "width": 1400,
+    "height": 923,
+    "srcSet": "/optimized/shots/nfq_landing_how-640.webp 640w, /optimized/shots/nfq_landing_how-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_plan.jpg": {
+    "width": 1400,
+    "height": 923,
+    "srcSet": "/optimized/shots/nfq_landing_plan-640.webp 640w, /optimized/shots/nfq_landing_plan-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_pricing.jpg": {
+    "width": 1400,
+    "height": 875,
+    "srcSet": "/optimized/shots/nfq_landing_pricing-640.webp 640w, /optimized/shots/nfq_landing_pricing-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_risks.jpg": {
+    "width": 1400,
+    "height": 875,
+    "srcSet": "/optimized/shots/nfq_landing_risks-640.webp 640w, /optimized/shots/nfq_landing_risks-1200.webp 1200w"
+  },
+  "/shots/nfq_landing_riskscore.jpg": {
+    "width": 1400,
+    "height": 923,
+    "srcSet": "/optimized/shots/nfq_landing_riskscore-640.webp 640w, /optimized/shots/nfq_landing_riskscore-1200.webp 1200w"
+  },
+  "/shots/nfq_report_top.jpg": {
+    "width": 1600,
+    "height": 1266,
+    "srcSet": "/optimized/shots/nfq_report_top-640.webp 640w, /optimized/shots/nfq_report_top-1200.webp 1200w"
+  },
+  "/shots/nfq_report_violations.jpg": {
+    "width": 1600,
+    "height": 1200,
+    "srcSet": "/optimized/shots/nfq_report_violations-640.webp 640w, /optimized/shots/nfq_report_violations-1200.webp 1200w"
+  },
+  "/shots/nfq_review_avangard.jpg": {
+    "width": 1061,
+    "height": 1500,
+    "srcSet": "/optimized/shots/nfq_review_avangard-640.webp 640w, /optimized/shots/nfq_review_avangard-1061.webp 1061w"
+  },
+  "/shots/nfq_review_rapsodia.jpg": {
+    "width": 1061,
+    "height": 1500,
+    "srcSet": "/optimized/shots/nfq_review_rapsodia-640.webp 640w, /optimized/shots/nfq_review_rapsodia-1061.webp 1061w"
+  },
+  "/shots/nfq_slide_competitors.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_competitors-640.webp 640w, /optimized/shots/nfq_slide_competitors-1200.webp 1200w"
+  },
+  "/shots/nfq_slide_expertos.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_expertos-640.webp 640w, /optimized/shots/nfq_slide_expertos-1200.webp 1200w"
+  },
+  "/shots/nfq_slide_finance.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_finance-640.webp 640w, /optimized/shots/nfq_slide_finance-1200.webp 1200w"
+  },
+  "/shots/nfq_slide_market_growth.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_market_growth-640.webp 640w, /optimized/shots/nfq_slide_market_growth-1200.webp 1200w"
+  },
+  "/shots/nfq_slide_market_size.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_market_size-640.webp 640w, /optimized/shots/nfq_slide_market_size-1200.webp 1200w"
+  },
+  "/shots/nfq_slide_process.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_process-640.webp 640w, /optimized/shots/nfq_slide_process-1200.webp 1200w"
+  },
+  "/shots/nfq_slide_roadmap.jpg": {
+    "width": 1467,
+    "height": 825,
+    "srcSet": "/optimized/shots/nfq_slide_roadmap-640.webp 640w, /optimized/shots/nfq_slide_roadmap-1200.webp 1200w"
+  },
+  "/shots/nfq_std_checklist.jpg": {
+    "width": 1077,
+    "height": 1521,
+    "srcSet": "/optimized/shots/nfq_std_checklist-640.webp 640w, /optimized/shots/nfq_std_checklist-1077.webp 1077w"
+  },
+  "/shots/nfq_std_en_casestudy.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_std_en_casestudy-640.webp 640w, /optimized/shots/nfq_std_en_casestudy-1150.webp 1150w"
+  },
+  "/shots/nfq_std_en_checklist.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_std_en_checklist-640.webp 640w, /optimized/shots/nfq_std_en_checklist-1150.webp 1150w"
+  },
+  "/shots/nfq_std_en_cover.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_std_en_cover-640.webp 640w, /optimized/shots/nfq_std_en_cover-1150.webp 1150w"
+  },
+  "/shots/nfq_std_en_score.jpg": {
+    "width": 1150,
+    "height": 1626,
+    "srcSet": "/optimized/shots/nfq_std_en_score-640.webp 640w, /optimized/shots/nfq_std_en_score-1150.webp 1150w"
+  },
+  "/shots/nfq_std_methodology.jpg": {
+    "width": 1077,
+    "height": 1521,
+    "srcSet": "/optimized/shots/nfq_std_methodology-640.webp 640w, /optimized/shots/nfq_std_methodology-1077.webp 1077w"
+  },
+  "/shots/nfq_std_score.jpg": {
+    "width": 1077,
+    "height": 1521,
+    "srcSet": "/optimized/shots/nfq_std_score-640.webp 640w, /optimized/shots/nfq_std_score-1077.webp 1077w"
+  },
+  "/certs/cert_academic.jpg": {
+    "width": 990,
+    "height": 1400,
+    "srcSet": "/optimized/certs/cert_academic-640.webp 640w, /optimized/certs/cert_academic-990.webp 990w"
+  },
+  "/certs/cert_college_bankagent.jpg": {
+    "width": 1500,
+    "height": 1061,
+    "srcSet": "/optimized/certs/cert_college_bankagent-640.webp 640w, /optimized/certs/cert_college_bankagent-1200.webp 1200w"
+  },
+  "/certs/cert_college_bankagent_transcript.jpg": {
+    "width": 1061,
+    "height": 1500,
+    "srcSet": "/optimized/certs/cert_college_bankagent_transcript-640.webp 640w, /optimized/certs/cert_college_bankagent_transcript-1061.webp 1061w"
+  },
+  "/certs/cert_creativity_young_school.jpg": {
+    "width": 990,
+    "height": 1400,
+    "srcSet": "/optimized/certs/cert_creativity_young_school-640.webp 640w, /optimized/certs/cert_creativity_young_school-990.webp 990w"
+  },
+  "/certs/cert_efset_english.jpg": {
+    "width": 1400,
+    "height": 1329,
+    "srcSet": "/optimized/certs/cert_efset_english-640.webp 640w, /optimized/certs/cert_efset_english-1200.webp 1200w"
+  },
+  "/certs/cert_gratitude_family.jpg": {
+    "width": 990,
+    "height": 1400,
+    "srcSet": "/optimized/certs/cert_gratitude_family-640.webp 640w, /optimized/certs/cert_gratitude_family-990.webp 990w"
+  },
+  "/certs/cert_miet_itschool.jpg": {
+    "width": 1500,
+    "height": 1061,
+    "srcSet": "/optimized/certs/cert_miet_itschool-640.webp 640w, /optimized/certs/cert_miet_itschool-1200.webp 1200w"
+  },
+  "/certs/cert_olympiad_literature.jpg": {
+    "width": 990,
+    "height": 1400,
+    "srcSet": "/optimized/certs/cert_olympiad_literature-640.webp 640w, /optimized/certs/cert_olympiad_literature-990.webp 990w"
+  },
+  "/certs/cert_olympiad_obzh.jpg": {
+    "width": 990,
+    "height": 1400,
+    "srcSet": "/optimized/certs/cert_olympiad_obzh-640.webp 640w, /optimized/certs/cert_olympiad_obzh-990.webp 990w"
+  },
+  "/certs/cert_photo_first.jpg": {
+    "width": 1500,
+    "height": 1061,
+    "srcSet": "/optimized/certs/cert_photo_first-640.webp 640w, /optimized/certs/cert_photo_first-1200.webp 1200w"
+  },
+  "/certs/cert_premiere_videosmile.jpg": {
+    "width": 1123,
+    "height": 794,
+    "srcSet": "/optimized/certs/cert_premiere_videosmile-640.webp 640w, /optimized/certs/cert_premiere_videosmile-1123.webp 1123w"
+  },
+  "/certs/cert_school_conf_winner.jpg": {
+    "width": 990,
+    "height": 1400,
+    "srcSet": "/optimized/certs/cert_school_conf_winner-640.webp 640w, /optimized/certs/cert_school_conf_winner-990.webp 990w"
+  },
+  "/certs/cert_scienceforlife_participant.jpg": {
+    "width": 1500,
+    "height": 1061,
+    "srcSet": "/optimized/certs/cert_scienceforlife_participant-640.webp 640w, /optimized/certs/cert_scienceforlife_participant-1200.webp 1200w"
+  },
+  "/certs/cert_vavt_summer.jpg": {
+    "width": 1500,
+    "height": 1061,
+    "srcSet": "/optimized/certs/cert_vavt_summer-640.webp 640w, /optimized/certs/cert_vavt_summer-1200.webp 1200w"
+  },
+  "/certs/diving/jununi_back.jpg": {
+    "width": 1360,
+    "height": 839,
+    "srcSet": "/optimized/certs/diving/jununi_back-640.webp 640w, /optimized/certs/diving/jununi_back-1200.webp 1200w"
+  },
+  "/certs/diving/jununi_front.jpg": {
+    "width": 1424,
+    "height": 887,
+    "srcSet": "/optimized/certs/diving/jununi_front-640.webp 640w, /optimized/certs/diving/jununi_front-1200.webp 1200w"
+  },
+  "/certs/diving/ow_back.jpg": {
+    "width": 1500,
+    "height": 961,
+    "srcSet": "/optimized/certs/diving/ow_back-640.webp 640w, /optimized/certs/diving/ow_back-1200.webp 1200w"
+  },
+  "/certs/diving/ow_front.jpg": {
+    "width": 1383,
+    "height": 826,
+    "srcSet": "/optimized/certs/diving/ow_front-640.webp 640w, /optimized/certs/diving/ow_front-1200.webp 1200w"
+  },
+  "/certs/diving/rescue_back.jpg": {
+    "width": 1420,
+    "height": 890,
+    "srcSet": "/optimized/certs/diving/rescue_back-640.webp 640w, /optimized/certs/diving/rescue_back-1200.webp 1200w"
+  },
+  "/certs/diving/rescue_front.jpg": {
+    "width": 1381,
+    "height": 874,
+    "srcSet": "/optimized/certs/diving/rescue_front-640.webp 640w, /optimized/certs/diving/rescue_front-1200.webp 1200w"
+  }
+}

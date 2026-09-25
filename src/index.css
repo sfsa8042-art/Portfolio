@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=JetBrains+Mono:wght@400;500&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -14,7 +13,8 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scrollbar-gutter: stable; }
+section[id], footer[id] { scroll-margin-top: 96px; }
 
 body {
   margin: 0;
@@ -37,7 +37,7 @@ body {
 .gradient-border-anim {
   background: linear-gradient(90deg, #89aacc, #4e85bf, #89aacc);
   background-size: 200% 100%;
-  animation: gradient-shift 6s ease infinite;
+  animation: ambient-breathe 8s ease-in-out infinite alternate;
 }
 
 ::selection { background: rgba(137, 170, 204, 0.3); color: hsl(var(--text)); }
@@ -55,4 +55,22 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Animate opacity/transform instead of blur and repainting a gradient. */
+.hero .name-reveal, .hero .blur-in { animation: soft-enter .6s both; animation-play-state: paused; }
+.hero .blur-in { animation-delay: .08s; }
+.hero[data-ready="true"] .name-reveal, .hero[data-ready="true"] .blur-in { animation-play-state: running; }
+.hero[data-running="false"] .gradient-border-anim,
+.contact[data-running="false"] .gradient-border-anim,
+.contact[data-running="false"] .animate-ping,
+.hero[data-running="false"] .animate-scroll-down { animation-play-state: paused; }
+.marquee-track { animation: marquee 40s linear infinite; animation-play-state: paused; }
+[data-running="true"] > .marquee-track { animation-play-state: running; }
+@keyframes soft-enter { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes ambient-breathe { from { opacity: .18; } to { opacity: .3; } }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) {
+  .hero .name-reveal, .hero .blur-in { animation: none; }
+  .marquee-track, .gradient-border-anim { animation: none; }
 }

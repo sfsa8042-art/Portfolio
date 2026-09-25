@@ -1,5 +1,6 @@
+import { OptimizedImage } from "./OptimizedImage";
 import { useEffect, useState, type CSSProperties } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m } from "framer-motion";
 import {
   certificates,
   moreCertificates,
@@ -21,11 +22,11 @@ function CertCard({
   onZoom: (src: string) => void;
 }) {
   return (
-    <motion.figure
+    <m.figure
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: index * 0.06, ease: EASE }}
+      transition={{ duration: 0.45, delay: (index % 2) * 0.05, ease: EASE }}
       className="group flex flex-col rounded-3xl border border-stroke bg-surface overflow-hidden transition-colors hover:border-white/20"
     >
       <button
@@ -33,7 +34,7 @@ function CertCard({
         className="relative block cursor-zoom-in bg-white"
         aria-label={`Zoom ${cert.title}`}
       >
-        <img
+        <OptimizedImage
           src={cert.src}
           alt={cert.title}
           loading="lazy"
@@ -49,7 +50,7 @@ function CertCard({
         </h3>
         <p className="text-sm text-muted leading-relaxed">{cert.caption}</p>
       </figcaption>
-    </motion.figure>
+    </m.figure>
   );
 }
 
@@ -59,11 +60,11 @@ function FlipCard({ card, index }: { card: DivingCard; index: number }) {
     backfaceVisibility: "hidden",
   };
   return (
-    <motion.figure
+    <m.figure
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay: index * 0.06, ease: EASE }}
+      transition={{ duration: 0.45, delay: index * 0.06, ease: EASE }}
       className="flex flex-col"
     >
       <button
@@ -84,7 +85,7 @@ function FlipCard({ card, index }: { card: DivingCard; index: number }) {
             className="absolute inset-0 rounded-2xl overflow-hidden border border-stroke bg-white"
             style={faceStyle}
           >
-            <img
+            <OptimizedImage
               src={card.front}
               alt={`${card.title} — front`}
               loading="lazy"
@@ -95,7 +96,7 @@ function FlipCard({ card, index }: { card: DivingCard; index: number }) {
             className="absolute inset-0 rounded-2xl overflow-hidden border border-stroke bg-white"
             style={{ ...faceStyle, transform: "rotateY(180deg)" }}
           >
-            <img
+            <OptimizedImage
               src={card.back}
               alt={`${card.title} — back`}
               loading="lazy"
@@ -120,7 +121,7 @@ function FlipCard({ card, index }: { card: DivingCard; index: number }) {
         </h3>
         <p className="text-sm text-muted leading-relaxed">{card.caption}</p>
       </figcaption>
-    </motion.figure>
+    </m.figure>
   );
 }
 
@@ -145,11 +146,11 @@ export function Certificates() {
   return (
     <section id="certificates" className="bg-bg py-16 md:py-24">
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: EASE }}
+          transition={{ duration: 0.5, ease: EASE }}
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-5">
@@ -166,7 +167,7 @@ export function Certificates() {
             colleges and universities. The original documents are in Russian —
             captions are translated to English.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* important certificates */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -205,12 +206,12 @@ export function Certificates() {
 
             <AnimatePresence initial={false}>
               {expanded && (
-                <motion.div
+                <m.div
                   key="more"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.45, ease: EASE }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: EASE }}
                   className="overflow-hidden"
                 >
                   {/* diving — flip cards */}
@@ -261,7 +262,7 @@ export function Certificates() {
                       </div>
                     </div>
                   )}
-                </motion.div>
+                </m.div>
               )}
             </AnimatePresence>
           </div>
@@ -274,7 +275,7 @@ export function Certificates() {
           className="fixed inset-0 z-[110] bg-black/90 flex items-center justify-center p-6 cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <img
+          <img decoding="async"
             src={lightbox}
             alt=""
             className="max-w-full max-h-full rounded-lg border border-white/10"

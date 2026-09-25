@@ -430,3 +430,7 @@ export const divingCards: DivingCard[] = [
       "National Dive League — Junior Universal Diver, max depth 21 m (dives under supervision of a certified adult). Da-Diving center · certified 7 Aug 2022.",
   },
 ];
+
+export const intro = {
+  skip: "Skip intro →",
+};

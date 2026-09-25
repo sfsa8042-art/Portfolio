@@ -1,6 +1,15 @@
 # Artemiy Fomkin — Portfolio
 
-Dark, minimal single-page portfolio. React + Vite + TypeScript + Tailwind + GSAP + Framer Motion.
+Dark, minimal single-page portfolio. React + Vite + TypeScript + Tailwind + Framer Motion.
+
+## Performance
+
+- `npm ci` installs the locked dependency versions.
+- `npm run dev` and `npm run build` prepare responsive WebP previews using Sharp (640 and 1200 px, without upscaling). Generated previews are ignored by Git; the build recreates them from the original JPGs in `public/shots` and `public/certs`.
+- `src/data/image-manifest.json` records intrinsic sizes and preview sources. It is regenerated with `npm run images:optimize` when source images change. Full-size JPGs remain available in lightboxes.
+- The original cinematic intro is preserved: typing terminal, canvas aurora and particles, name reveal, and upward curtain exit. A skip button remains available; section links and reduced-motion users bypass it. Hero entrance starts after the intro exits.
+- CSS handles the hero and marquee. Decorative motion pauses outside the viewport and in background tabs. Framer Motion uses `LazyMotion` and `m` with reduced-motion support.
+- Image dimensions reserve layout space; the scrollbar gutter stays stable when project overlays lock scrolling.
 
 ## Запуск
 
@@ -39,9 +48,9 @@ src/data/content.ts
 src/
   data/content.ts        ← весь редактируемый контент
   components/
-    LoadingScreen.tsx    ← прелоадер (счётчик 000→100)
+    LoadingScreen.tsx    ← терминал, свечение, появление имени и кнопка пропуска
     Navbar.tsx           ← плавающая навигация
-    Hero.tsx             ← первый экран, GSAP-вход, градиентный фон
+    Hero.tsx             ← первый экран, CSS-анимация, градиентный фон
     Work.tsx             ← bento-сетка проектов
     About.tsx            ← о себе + интересы + статистика
     Contact.tsx          ← CTA, marquee, футер
@@ -73,7 +82,7 @@ src/
 ## Заметки
 
 - Шрифты: дисплейный **Fraunces** (italic) + **Inter** для текста + **JetBrains Mono** для цифр/меток.
-- Прелоадер: имя собирается по буквам с blur-reveal, растущая линия-прогресс, на выходе — «занавес» вверх.
+- Интро: печатающийся терминал, canvas-свечение и частицы, появление имени из размытия и уходящий вверх «занавес». Есть кнопка пропуска.
 - Карточки проектов содержат **реалистичные SVG-превью** продуктов (`src/components/Mockups.tsx`), построенные по реальным данным: телеметрия APEX (Monza/Porsche, gap −1.241s), отчёт NFQ (Score 58→86, экспозиция 640 000 ₽), скоринг рынков EntryLens. Мокап проекта задаётся полем `mockup` в `content.ts`.
 - Видео-фон из исходного промпта заменён на тихий анимированный градиент (минимализм, без hls.js).
 - Синий акцент `#89AACC → #4E85BF` задан классом `.accent-gradient` в `index.css`.

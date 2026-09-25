@@ -5,7 +5,8 @@ Guidance for Claude Code when working in this repository.
 ## What this is
 
 A single-page personal portfolio for **Artemiy Fomkin** (founder / student).
-Stack: **React 18 + Vite + TypeScript + Tailwind CSS + Framer Motion + GSAP**.
+Stack: **React 18 + Vite + TypeScript + Tailwind CSS + Framer Motion**.
+Use `m` inside the existing `LazyMotion` provider, not `motion`. Hero/marquee effects use CSS and pause when hidden. `npm run dev` and `npm run build` generate responsive WebP previews with Sharp; preserve the original JPEGs for document zoom.
 Dark theme only. Everything is one page with an animated loading screen and
 project "profile" overlays.
 
@@ -18,7 +19,7 @@ npm run build    # type-check + production build to /dist
 npm run preview  # preview the production build
 ```
 
-Node 18+ recommended.
+Node 20.9+ required (Sharp image generation).
 
 ## Where things live
 
@@ -26,13 +27,13 @@ Node 18+ recommended.
 src/
   data/content.ts        ← SINGLE SOURCE OF TRUTH for all content
   components/
-    LoadingScreen.tsx    ← cinematic preloader (canvas aurora + masked name)
+    LoadingScreen.tsx    ← cinematic terminal, canvas aurora, name reveal, skip button
     Navbar.tsx           ← floating pill nav
-    Hero.tsx             ← first screen, GSAP intro, gradient background
+    Hero.tsx             ← first screen, CSS entrance, gradient background
     Work.tsx             ← project grid (bento). Click a card → ProjectDetail
     ProjectDetail.tsx    ← full-screen project profile overlay (galleries, embeds)
     About.tsx            ← bio + interests + stats
-    Contact.tsx          ← CTA, GSAP marquee, footer with socials
+    Contact.tsx          ← CTA, CSS marquee, footer with socials
     Mockups.tsx          ← SVG product mockups (fallback when no real screenshot)
     Emphasis.tsx         ← helper: *word* → display-italic accent
   App.tsx                ← composition + loading/detail state

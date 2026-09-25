@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { profile } from "../data/content";
+import { m, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { profile, intro } from "../data/content";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -160,7 +160,7 @@ function Typewriter({
 
 function Cursor() {
   return (
-    <motion.span
+    <m.span
       className="inline-block w-[0.5em] h-[1.05em] translate-y-[0.14em] bg-[#89AACC] ml-1 rounded-[1px]"
       animate={{ opacity: [1, 1, 0, 0] }}
       transition={{ duration: 0.9, repeat: Infinity, ease: "linear", times: [0, 0.5, 0.5, 1] }}
@@ -199,13 +199,9 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
     if (reduced) setCurrent(LINES.length);
   }, [reduced]);
 
-  // when the log finishes, resolve into the name, then hand off.
-  // runs exactly once — the ref guard keeps a re-render (e.g. `booted` flipping)
-  // from tearing down the onComplete timer.
-  const resolvedRef = useRef(false);
+  // The parent supplies a stable callback; cleanup remains safe in StrictMode.
   useEffect(() => {
-    if (current < LINES.length || resolvedRef.current) return;
-    resolvedRef.current = true;
+    if (current < LINES.length) return;
     const idA = setTimeout(() => setBooted(true), reduced ? 0 : 240);
     const idB = setTimeout(onComplete, reduced ? 650 : 1000);
     return () => {
@@ -218,17 +214,17 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
   const year = new Date().getFullYear();
 
   return (
-    <motion.div
+    <m.div
       className="fixed inset-0 z-[9999] bg-bg overflow-hidden flex items-center justify-center"
       initial={{ y: 0 }}
       exit={{ y: "-100%" }}
       transition={{ duration: 1.0, ease: [0.76, 0, 0.24, 1] }}
     >
-      <motion.div className="absolute inset-0" style={{ x: aurX, y: aurY }}>
+      <m.div className="absolute inset-0" style={{ x: aurX, y: aurY }}>
         <Aurora />
-      </motion.div>
+      </m.div>
 
-      <motion.div
+      <m.div
         className="pointer-events-none absolute inset-[-8%] opacity-[0.05] mix-blend-overlay"
         style={{ backgroundImage: GRAIN }}
         animate={reduced ? undefined : { x: [0, -10, 6, -4, 0], y: [0, 6, -8, 4, 0] }}
@@ -252,17 +248,21 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
         © {year}
       </div>
 
+      <button onClick={onComplete} className="absolute bottom-6 right-6 z-20 rounded-full border border-white/10 px-4 py-2 text-xs text-muted hover:text-text-primary transition-colors">
+        {intro.skip}
+      </button>
+
       {/* center */}
-      <motion.div
+      <m.div
         className="relative z-10 w-[min(92vw,640px)] px-2"
         style={{ x: ctX, y: ctY }}
       >
-        <motion.div
+        <m.div
           className="flex flex-col items-center"
           exit={{ opacity: 0, y: -24, transition: { duration: 0.4, ease: "easeIn" } }}
         >
           {/* terminal window */}
-          <motion.div
+          <m.div
             className="w-full rounded-xl border border-white/10 bg-[#0c0d10]/85 backdrop-blur-md shadow-2xl shadow-black/40 overflow-hidden"
             initial={{ opacity: 0, y: 14, scale: 0.98 }}
             animate={{
@@ -313,51 +313,51 @@ export function LoadingScreen({ onComplete }: { onComplete: () => void }) {
                 {String(progress).padStart(3, "0")}
               </span>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* resolved identity — fades in as the terminal dissolves */}
-          <motion.div
+          <m.div
             className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: booted ? 1 : 0 }}
             transition={{ duration: 0.7, delay: booted ? 0.15 : 0, ease: EASE }}
           >
-            <motion.h1
+            <m.h1
               className="font-display italic text-5xl md:text-7xl text-text-primary text-center"
               initial={{ filter: "blur(10px)", y: 10 }}
               animate={{ filter: booted ? "blur(0px)" : "blur(10px)", y: booted ? 0 : 10 }}
               transition={{ duration: 0.8, delay: booted ? 0.15 : 0, ease: EASE }}
             >
               {profile.name}
-            </motion.h1>
-            <motion.div
+            </m.h1>
+            <m.div
               className="mt-5 h-px w-40 accent-gradient"
               initial={{ scaleX: 0 }}
               animate={{ scaleX: booted ? 1 : 0 }}
               transition={{ duration: 0.7, delay: booted ? 0.35 : 0, ease: EASE }}
               style={{ boxShadow: "0 0 14px rgba(137,170,204,0.6)" }}
             />
-            <motion.p
+            <m.p
               className="mt-5 text-[11px] text-muted uppercase tracking-[0.3em]"
               initial={{ opacity: 0 }}
               animate={{ opacity: booted ? 1 : 0 }}
               transition={{ duration: 0.6, delay: booted ? 0.45 : 0 }}
             >
               Founder · Builder · Student
-            </motion.p>
-          </motion.div>
-        </motion.div>
-      </motion.div>
+            </m.p>
+          </m.div>
+        </m.div>
+      </m.div>
 
       {/* leading accent edge — leads the curtain up */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[rgba(137,170,204,0.10)] to-transparent" />
-      <motion.div
+      <m.div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] accent-gradient"
         style={{ boxShadow: "0 0 22px 3px rgba(137,170,204,0.55)" }}
         initial={{ opacity: 0, scaleX: 0 }}
         animate={{ opacity: booted ? 0.9 : 0.4, scaleX: 1 }}
         transition={{ duration: 1.0, ease: EASE }}
       />
-    </motion.div>
+    </m.div>
   );
 }
