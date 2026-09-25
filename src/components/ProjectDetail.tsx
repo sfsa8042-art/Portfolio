@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { OptimizedImage } from "./OptimizedImage";
+import { useEffect, useRef, useState } from "react";
+import { m } from "framer-motion";
 import type { Project, Shot } from "../data/content";
 import { mockups } from "./Mockups";
 
@@ -11,12 +12,9 @@ function ShotFigure({
   onOpen: (src: string) => void;
 }) {
   return (
-    <figure
-      className="group cursor-zoom-in"
-      onClick={() => onOpen(shot.src)}
-    >
-      <div className="relative rounded-xl overflow-hidden border border-stroke bg-surface">
-        <img
+    <figure className="group">
+      <button type="button" onClick={() => onOpen(shot.src)} aria-label={`Zoom ${shot.caption}`} className="block w-full cursor-zoom-in relative rounded-xl overflow-hidden border border-stroke bg-surface">
+        <OptimizedImage
           src={shot.src}
           alt={shot.caption}
           loading="lazy"
@@ -26,7 +24,7 @@ function ShotFigure({
         <div className="absolute top-2.5 right-2.5 text-[11px] text-text-primary bg-bg/70 backdrop-blur-md border border-white/10 rounded-full px-2.5 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
           Zoom ⤢
         </div>
-      </div>
+      </button>
       <figcaption className="text-xs text-muted mt-2">{shot.caption}</figcaption>
     </figure>
   );
@@ -43,26 +41,51 @@ export function ProjectDetail({
   const d = project.detail;
   const [lightbox, setLightbox] = useState<string | null>(null);
   const [showLive, setShowLive] = useState(false);
+  const dialog = useRef<HTMLDivElement>(null);
 
-  // lock body scroll while open
+  // Keep the page position stable while opening and closing the project.
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement as HTMLElement | null;
     document.body.style.overflow = "hidden";
+    dialog.current?.focus({ preventScroll: true });
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      requestAnimationFrame(() => previousFocus?.isConnected && previousFocus.focus({ preventScroll: true }));
+    };
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (lightbox) setLightbox(null);
         else onClose();
       }
+      if (e.key === "Tab") {
+        const scope = dialog.current?.querySelector("[data-lightbox]") || dialog.current;
+        const elements = scope?.querySelectorAll<HTMLElement>('button, a[href], iframe, [tabindex="0"]');
+        if (!elements?.length) return;
+        const first = elements[0];
+        const last = elements[elements.length - 1];
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === dialog.current || !scope?.contains(document.activeElement))) {
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && (document.activeElement === last || !scope?.contains(document.activeElement))) {
+          e.preventDefault(); first.focus();
+        }
+      }
     };
     window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKey);
-    };
+    return () => window.removeEventListener("keydown", onKey);
   }, [onClose, lightbox]);
 
   return (
-    <motion.div
-      className="fixed inset-0 z-[100] bg-bg overflow-y-auto"
+    <m.div
+      ref={dialog}
+      role="dialog"
+      aria-modal="true"
+      aria-label={project.title}
+      tabIndex={-1}
+      className="fixed inset-0 z-[100] bg-bg overflow-y-auto overscroll-contain"
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 24 }}
@@ -158,8 +181,9 @@ export function ProjectDetail({
             ) : (
               <div className="relative aspect-[16/9]">
                 {d.heroImage ? (
-                  <img
+                  <OptimizedImage
                     src={d.heroImage}
+                    loading="eager" sizes="(min-width: 1000px) 920px, 94vw"
                     alt={`${project.title} preview`}
                     className="w-full h-full object-cover object-top"
                   />
@@ -351,8 +375,9 @@ export function ProjectDetail({
                         className="group relative shrink-0 w-14 h-[72px] rounded-md overflow-hidden border border-stroke bg-white cursor-zoom-in"
                         aria-label={`View the ${r.org} review`}
                       >
-                        <img
+                        <OptimizedImage
                           src={r.src}
+                          sizes="56px"
                           alt=""
                           loading="lazy"
                           className="w-full h-full object-cover object-top"
@@ -459,10 +484,11 @@ export function ProjectDetail({
       {/* lightbox */}
       {lightbox && (
         <div
+          data-lightbox
           className="fixed inset-0 z-[110] bg-black/90 flex items-center justify-center p-6 cursor-zoom-out"
           onClick={() => setLightbox(null)}
         >
-          <img
+          <img decoding="async"
             src={lightbox}
             alt=""
             className="max-w-full max-h-full rounded-lg border border-white/10"
@@ -475,6 +501,6 @@ export function ProjectDetail({
           </button>
         </div>
       )}
-    </motion.div>
+    </m.div>
   );
 }

@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { OptimizedImage } from "./OptimizedImage";
+import { m } from "framer-motion";
 import { projects, type Project } from "../data/content";
 import { Emphasis } from "./Emphasis";
 import { mockups } from "./Mockups";
@@ -7,11 +8,11 @@ export function Work({ onOpen }: { onOpen: (p: Project) => void }) {
   return (
     <section id="work" className="bg-bg py-16 md:py-24">
       <div className="max-w-[1200px] mx-auto px-6 md:px-10 lg:px-16">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
           className="mb-12"
         >
           <div className="flex items-center gap-3 mb-5">
@@ -27,19 +28,19 @@ export function Work({ onOpen }: { onOpen: (p: Project) => void }) {
             A selection of things I'm building — from concept and research to
             launch. Click any project to open its full profile.
           </p>
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-5 md:gap-6">
           {projects.map((project, i) => {
             const Mock = mockups[project.mockup];
             return (
-              <motion.div
+              <m.div
                 key={project.slug}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
                 transition={{
-                  duration: 0.8,
+                  duration: 0.45,
                   delay: i * 0.08,
                   ease: [0.25, 0.1, 0.25, 1],
                 }}
@@ -65,7 +66,7 @@ export function Work({ onOpen }: { onOpen: (p: Project) => void }) {
                   <div className="relative aspect-[16/9] overflow-hidden border-b border-stroke">
                     <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04]">
                       {project.cardImage ? (
-                        <img
+                        <OptimizedImage
                           src={project.cardImage}
                           alt={`${project.title} preview`}
                           loading="lazy"
@@ -121,7 +122,7 @@ export function Work({ onOpen }: { onOpen: (p: Project) => void }) {
                     </div>
                   </div>
                 </button>
-              </motion.div>
+              </m.div>
             );
           })}
         </div>

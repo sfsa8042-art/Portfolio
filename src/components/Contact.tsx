@@ -1,28 +1,16 @@
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useVisibleAnimation } from "../hooks/useVisibleAnimation";
 import { profile, socials } from "../data/content";
 
 export function Contact() {
-  const marqueeRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(".marquee-track", {
-        xPercent: -50,
-        duration: 40,
-        ease: "none",
-        repeat: -1,
-      });
-    }, marqueeRef);
-    return () => ctx.revert();
-  }, []);
+  const { ref: marqueeRef, running } = useVisibleAnimation<HTMLDivElement>();
 
   const year = new Date().getFullYear();
 
   return (
     <footer
       id="contact"
-      className="relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden"
+      data-running={running}
+      className="contact relative bg-bg pt-16 md:pt-20 pb-8 md:pb-12 overflow-hidden"
     >
       {/* ambient background */}
       <div className="absolute inset-0 -z-10">
@@ -34,8 +22,8 @@ export function Contact() {
       </div>
 
       {/* marquee */}
-      <div ref={marqueeRef} className="relative overflow-hidden mb-16 md:mb-24">
-        <div className="marquee-track flex whitespace-nowrap">
+      <div ref={marqueeRef} aria-hidden="true" data-running={running} className="relative overflow-hidden mb-16 md:mb-24">
+        <div className="marquee-track flex w-max whitespace-nowrap">
           {Array.from({ length: 10 }).map((_, i) => (
             <span
               key={i}

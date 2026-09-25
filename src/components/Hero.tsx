@@ -1,40 +1,23 @@
-import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useEffect, useState } from "react";
+import { useVisibleAnimation } from "../hooks/useVisibleAnimation";
 import { profile } from "../data/content";
 
-export function Hero() {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function Hero({ ready }: { ready: boolean }) {
+  const { ref: containerRef, running } = useVisibleAnimation<HTMLElement>();
   const [roleIndex, setRoleIndex] = useState(0);
-
   useEffect(() => {
-    const id = setInterval(() => {
-      setRoleIndex((i) => (i + 1) % profile.roles.length);
-    }, 2000);
-    return () => clearInterval(id);
-  }, []);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-      tl.fromTo(
-        ".name-reveal",
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.2, delay: 0.1 }
-      ).fromTo(
-        ".blur-in",
-        { opacity: 0, filter: "blur(10px)", y: 20 },
-        { opacity: 1, filter: "blur(0px)", y: 0, duration: 1, stagger: 0.1 },
-        "-=0.9"
-      );
-    }, containerRef);
-    return () => ctx.revert();
-  }, []);
+    if (!running || !ready) return;
+    const id = window.setInterval(() => setRoleIndex(i => (i + 1) % profile.roles.length), 3000);
+    return () => window.clearInterval(id);
+  }, [running, ready]);
 
   return (
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      data-ready={ready}
+      data-running={running && ready}
+      className="hero relative min-h-[100svh] flex items-center justify-center overflow-hidden"
     >
       {/* ambient gradient background (replaces video) */}
       <div className="absolute inset-0 -z-10">
@@ -67,7 +50,7 @@ export function Hero() {
           {profile.roleLinePrefix}{" "}
           <span
             key={roleIndex}
-            className="font-display italic text-text-primary animate-role-fade-in inline-block"
+            className="font-display italic text-text-primary animate-role-fade-in inline-block w-[4.5em]"
           >
             {profile.roles[roleIndex]}
           </span>{" "}
