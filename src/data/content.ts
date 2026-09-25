@@ -433,6 +433,4 @@ export const divingCards: DivingCard[] = [
 
 export const intro = {
   skip: "Skip intro →",
-  roles: "Founder · Builder · Student",
-  lines: ['$ build --profile "Artemiy Fomkin"', '✓ projects · NFQ · APEX', '✓ recognition · 3 awards · 2 conferences', '▸ launching portfolio'],
 };

@@ -27,7 +27,7 @@ Node 20.9+ required (Sharp image generation).
 src/
   data/content.ts        ← SINGLE SOURCE OF TRUTH for all content
   components/
-    LoadingScreen.tsx    ← brief terminal intro with skip button
+    LoadingScreen.tsx    ← cinematic terminal, canvas aurora, name reveal, skip button
     Navbar.tsx           ← floating pill nav
     Hero.tsx             ← first screen, CSS entrance, gradient background
     Work.tsx             ← project grid (bento). Click a card → ProjectDetail

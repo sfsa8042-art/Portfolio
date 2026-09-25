@@ -58,8 +58,6 @@ body {
 }
 
 /* Animate opacity/transform instead of blur and repainting a gradient. */
-.intro-glow { background: radial-gradient(ellipse at center, rgba(137,170,204,.17), transparent 65%); }
-.intro-line { animation: soft-enter .25s both; }
 .hero .name-reveal, .hero .blur-in { animation: soft-enter .6s both; animation-play-state: paused; }
 .hero .blur-in { animation-delay: .08s; }
 .hero[data-ready="true"] .name-reveal, .hero[data-ready="true"] .blur-in { animation-play-state: running; }
